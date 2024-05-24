@@ -30,8 +30,8 @@ class DemandBoard:
     demands: List[TaskDemand] = field(default_factory=List)
     tests: List[TestDemand] = field(default_factory=List)
 
-    def add_demands(self, demand: TaskDemand):
+    def add_demands(self, demand: TaskDemand) -> None:
         self.demands.append(demand)
 
-    def add_tests(self, test: TestDemand):
+    def add_tests(self, test: TestDemand) -> None:
         self.tests.append(test)
