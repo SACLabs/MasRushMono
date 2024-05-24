@@ -1,6 +1,6 @@
 # gate
 # 充当网络参与者系统中的管理实体，处理节点之间的消息并相应地路由它们
-# Singleton 设计模式来确保每个 gate 类型只有一个实例
+# Singleton , 确保每个 gate 类型(QA gate / PM gate)只有一个实例
 
 from typing import List, Tuple, Dict, Set
 

@@ -24,7 +24,6 @@ Boss (Client): 提供项目验收与反馈
               |--> [ demand解析: Input: 需求定义（test + descript + refer src）; Output: 需求文档 ]
               |
 [ 架构设计与开发 节点]
-            
               |--> [ 架构/系统设计: Input: 需求定义, 需求文档; Output: 系统设计说明 ]
               |       &emsp;|
               |       &emsp;|--> [ 工程开发: Input: 需求定义, 需求文档, 系统设计说明; Output: 功能代码 ]
