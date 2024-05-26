@@ -28,7 +28,7 @@ class VisualGraph:
 
 
 # 将图数据存入dataclass用于可视化
-def from_networkx_graph(graph: nx.MultiDiGraph) ->  VisualGraph # 遍历图数据存入dataclass 用于可视化
+def from_networkx_graph(graph: nx.MultiDiGraph) -> VisualGraph:  # 遍历图数据存入dataclass 用于可视化
     nodes = [VisualNode(str(node), graph.nodes[node]) for node in graph.nodes()]
     edges = [
         VisualEdge(
@@ -42,6 +42,7 @@ def from_networkx_graph(graph: nx.MultiDiGraph) ->  VisualGraph # 遍历图数�
         for key in graph.edges[edge]
     ]
     return VisualGraph(graph, nodes, edges)
+
 
 if __name__ == "__main__":
     # 生成随机图
