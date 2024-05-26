@@ -14,12 +14,11 @@ class Preprocessor(metaclass=ABCMeta):
 
 class Node(AbstractActor):
     _id_counter: int = 0
-    # 
     message_handlers: Dict[str, List[Callable[..., Any]]] = (
         {}
-    )  # Class-level attribute shared by all instances
-    message_types: List[List[str]] = []     # [["DE:QA", "PM:QA"]]
-    handler_call_by_message_types: Dict[Callable, List[str]] = {}   # {"handler_QA": ["DE:QA", "PM:QA"]}
+    )  # ["DE:QA": [handler_generate_test], "PM:QA": [handler_generate_test, handler_generate_doc]]
+    message_types: List[List[str]] = []     # [["DE:QA", "PM:QA"], ["PM:QA"]]
+    handler_call_by_message_types: Dict[Callable, List[str]] = {}   # {"handler_generate_test": ["DE:QA", "PM:QA"], "handler_generate_doc": ["PM:QA"]}
 
     def __init__(self, node_name: str = "", address: str = ""):
         super().__init__()
