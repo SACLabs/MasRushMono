@@ -45,7 +45,7 @@ class Env2MAS(BaseModel):
 
 class MAS2Env(BaseModel):
     result: str # 这里是源代码
-    log: str # 从log中可以提取看板信息
+    history: str # 从log中可以提取看板信息
     graph: Graph # agent组织结构
 
 class Algo2MAS(BaseModel):
