@@ -1,0 +1,113 @@
+{
+    "created": 1716793592.9061322,
+    "duration": 0.011195182800292969,
+    "exitcode": 0,
+    "root": "/home/PJLAB/chenliang/Downloads/tem",
+    "environment": {},
+    "summary": {
+        "passed": 3,
+        "total": 3,
+        "collected": 3
+    },
+    "collectors": [
+        {
+            "nodeid": "",
+            "outcome": "passed",
+            "result": [
+                {
+                    "nodeid": "tests/test_base.py",
+                    "type": "Module"
+                }
+            ]
+        },
+        {
+            "nodeid": "tests/test_base.py",
+            "outcome": "passed",
+            "result": [
+                {
+                    "nodeid": "tests/test_base.py::test_add_positive",
+                    "type": "Function",
+                    "lineno": 3
+                },
+                {
+                    "nodeid": "tests/test_base.py::test_add_negative",
+                    "type": "Function",
+                    "lineno": 6
+                },
+                {
+                    "nodeid": "tests/test_base.py::test_add_zero",
+                    "type": "Function",
+                    "lineno": 9
+                }
+            ]
+        }
+    ],
+    "tests": [
+        {
+            "nodeid": "tests/test_base.py::test_add_positive",
+            "lineno": 3,
+            "outcome": "passed",
+            "keywords": [
+                "test_add_positive",
+                "tests/test_base.py",
+                "tem"
+            ],
+            "setup": {
+                "duration": 0.00017907284200191498,
+                "outcome": "passed"
+            },
+            "call": {
+                "duration": 0.0001117335632443428,
+                "outcome": "passed"
+            },
+            "teardown": {
+                "duration": 0.0001132739707827568,
+                "outcome": "passed"
+            }
+        },
+        {
+            "nodeid": "tests/test_base.py::test_add_negative",
+            "lineno": 6,
+            "outcome": "passed",
+            "keywords": [
+                "test_add_negative",
+                "tests/test_base.py",
+                "tem"
+            ],
+            "setup": {
+                "duration": 9.472202509641647e-05,
+                "outcome": "passed"
+            },
+            "call": {
+                "duration": 8.994806557893753e-05,
+                "outcome": "passed"
+            },
+            "teardown": {
+                "duration": 7.155910134315491e-05,
+                "outcome": "passed"
+            }
+        },
+        {
+            "nodeid": "tests/test_base.py::test_add_zero",
+            "lineno": 9,
+            "outcome": "passed",
+            "keywords": [
+                "test_add_zero",
+                "tests/test_base.py",
+                "tem"
+            ],
+            "setup": {
+                "duration": 7.935799658298492e-05,
+                "outcome": "passed"
+            },
+            "call": {
+                "duration": 9.254738688468933e-05,
+                "outcome": "passed"
+            },
+            "teardown": {
+                "duration": 8.32853838801384e-05,
+                "outcome": "passed"
+            }
+        }
+    ]
+}

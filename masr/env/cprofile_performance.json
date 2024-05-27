@@ -1,0 +1,22 @@
+{
+    "~:0:(<built-in method builtins.exec>)": {
+        "ncalls": 1,
+        "tottime": 1,
+        "cumtime": 3.2230000000000003e-06
+    },
+    "main.py:1:(sum)": {
+        "ncalls": 1,
+        "tottime": 1,
+        "cumtime": 2.68e-07
+    },
+    "main.py:1:(<module>)": {
+        "ncalls": 1,
+        "tottime": 1,
+        "cumtime": 1.54e-06
+    },
+    "~:0:(<method 'disable' of '_lsprof.Profiler' objects>)": {
+        "ncalls": 1,
+        "tottime": 1,
+        "cumtime": 1.4500000000000001e-07
+    }
+}
