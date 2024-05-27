@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 from node import Node  
+from networkx import MultiDiGraph
+import networkx as nx
 
  
 """
@@ -29,9 +31,9 @@ class Graph:
     def remove_edge(self, edge: Tuple) -> None:
         pass
 
-    # 使用GML格式进行序列化和反序列化
-    def stringizer(self, file_path: str) -> None:
-        pass
+# 使用GML格式进行序列化和反序列化
+def stringize_graph(MDGraph: MultiDiGraph) -> str:
+    return "\n".join(nx.generate_gml(MDGraph))
 
-    def destringizer(self, file_path: str) -> None:
-        pass
+def destringize_graph(gml_text: str) -> MultiDiGraph:
+    return nx.parse_gml(gml_text)
