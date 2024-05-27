@@ -4,38 +4,94 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from enum import Enum
-import uuid
-# 不是demand board， 是agent的task board, 需要有个字符串去测试
+from datetime import datetime
 
 
 class TaskStatus(Enum):
-    CREATED = "created"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    FAILED = "failed"
+    CREATED = "C"
+    IN_PROGRESS = "P"
+    COMPLETED = "X"
+    FAILED = "F"
 
 
 @dataclass
 class Task:
+    # must have
     name: str
     description: str
     status: TaskStatus
-    subtasks: List['Task'] = field(default_factory=list)
+    # optional
+    tags: Optional[List[str]] = field(default_factory=list)
+    subtasks: Optional[List['Task']] = field(default_factory=list)
     owner: Optional[List] = field(default_factory=list)
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    priority: Optional[int] = 0
+    due_date: Optional[datetime] = None
+    created_time: Optional[datetime] = field(default_factory=datetime.now)
 
 
-def parse_task(task_from_mas: str) -> Task:
-    # parse the task file from mas, store in dataclass Task(name, description, status, subtasks, owner)
-    pass
+def task_to_todotxt(task_des: Task, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)
+    # todotxt components, task status
+    parts = [task_des.status.value]
+
+    # add priority
+    if task_des.priority > 0:
+        parts.append(f"({chr(65 + task_des.priority - 1)})")
+
+    # add due date
+    if task_des.due_date:
+        parts.append(task_des.due_date.strftime('%Y-%m-%d'))
+
+    # add task name and description
+    parts.append(f"{task_des.name}: {task_des.description}")
+
+    # add tags
+    for tag in task_des.tags:
+        parts.append(f"+{tag}")
+
+    # add owner
+    for owner in task_des.owner:
+        parts.append(f"@{owner}")
+
+    # convert parts to string
+    task_str = ' '.join(parts)
+
+    # apply task and subtasks in a hierarchical structure
+    indent = "  " * indent_level
+    result = [f"{indent}{task_str}"]
+
+    # recursively add tasks to todotxt
+    for subtasks in task_des.subtasks:
+        result.append(task_to_todotxt(subtasks, indent_level + 1))
+
+    # return a todotxt string
+    return "\n".join(result)
 
 
 if __name__ == "__main__":
-    task_desc = """
-    开发贪吃蛇游戏: in-progress, 创建一个简单的贪吃蛇游戏
-        - 设置游戏界面
-            -创建游戏窗口: created, 创建游戏窗口, agent a
-            - 绘制游戏区域: in-progress, 绘制游戏区域, agent b
-    """
-    task = parse_task(task_desc)
-    print(task)
+    # a example task from mas
+    task_desc = Task(
+        name="Task_A",
+        description="This is an example task.",
+        status=TaskStatus.IN_PROGRESS,
+        tags=["project1"],
+        owner=["agent1", "agent2"],
+        priority=1,
+        due_date=datetime(2024, 6, 30),
+        subtasks=[Task(
+                name="Task_A_1",
+                description="This is the first subtask.",
+                status=TaskStatus.CREATED,
+                owner=['agent1'],
+                priority=2),
+                Task(
+                name="Subtask_A_2",
+                description="This is the second subtask.",
+                status=TaskStatus.COMPLETED,
+                owner=['agent2'],
+                priority=1)]
+            )
+
+    todo_lines = task_to_todotxt(task_desc)
+
+    with open('task.txt', 'w') as file:
+        file.write(todo_lines)
