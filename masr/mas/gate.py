@@ -37,13 +37,47 @@ class NodeGate(AbstractActor):
         ...
 
     def on_receive(self, message: Message):
-        # 判断 message 源是 router 还是 node
-        # if is router:
-        #   send to node
-        # else:
-        #   send to router
-        ...
+        # 新消息添加至邮箱
+        self._message_box.append(message)
+        # 处理消息
+        self.handle_message(message)
+    
+    def handle_message(self, message: Message):
+        # 根据消息来源的agent类型进行不同处理
+        if message.from_agent_type == "Router":
+            self.send_message_to_node(message)
+        elif message.from_agent_type == "RealNode":
+            self.send_message_to_router(message)
+        else:
+            raise NotImplementedError
+    
+    def send_message_to_node(self, message):
+        # gate -> node 分三种消息类型
+        # 1. 点对点; 2. 广播; 3. 随机分配
+        if message.to_agent != "None":
+            # 点对点
+            self._send(message, message.to_agent)
+        elif message.broadcasting:
+            # 广播
+            linked_instance_list = [
+                # 找到当前 gate 下的所有 node
+                # 由于同类型内部可以传递信息，需要避免 自身传递消息给自身的情况
+            ]
+            self._send(message, linked_instance_list)
+        else:
+            # 随机分配
+            linked_instance_list = [
+                # 同广播
+            ]
+            # 从 linked_instance_list 中随机选一个对象发送
+            target_instance = random.choice(linked_instance_list)
+            self._send(message, target_instance)
 
+    def send_message_to_router(self, message):
+        # 根据 message name 传递消息给指定的router
+        self._send(message, self._router_addr_dict[message.message_name])
+        ...
+    
     def spawn_new_actor(self, cls, args):
         # 根据提供的类和参数动态创建同类型 node 的实例，并在 对应类型的 gate 中对它们进行管理。
         ...

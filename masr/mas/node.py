@@ -1,10 +1,11 @@
 import logging
 from abc import ABCMeta
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Tuple
 
 
 from actor import AbstractActor
 from message import Message
+from gate import NodeGate
 
 
 class Preprocessor(metaclass=ABCMeta):
@@ -27,6 +28,7 @@ class Node(AbstractActor):
         self._node_type = "RealNode"
         self.node_name = node_name
         self.address = address
+        self.gate: NodeGate = None
         # message name : handler
         self.handlers: Dict[str, Callable] = {}
         # { "DE:QA": [message_over, ..., message_lates], "PM:QA": [message_over, ..., message_lates]}
@@ -34,10 +36,37 @@ class Node(AbstractActor):
 
     def on_receive(self, message: Message):
         # message_map 更新
-        # target_message = handle_message(message)
-        # send to gate
-        ...
+        self.message_map[message.message_name].append(message)
+        # 处理当前消息
+        target_messages = self.handle_message(message)
+        
+        [self._send(message, self.gate._node_addr) for message in target_messages]
 
+    def handle_message(
+        self, message: Message, *args: Any, **kwargs: Any
+    ) -> Any:
+        result = []
+        # 一个消息可触发多个处理函数
+        handlers = self.message_handlers[message.message_name]
+        # 一个处理函数需要一个至多个消息触发, 在图上等于一个节点拥有多个入度
+        for handler in handlers:
+            # 根据 message 和 handler 寻找历史消息
+            # 并打包消息给handler进行处理
+            handled_messages = [handler(messages) for messages in self.check_prefix(message, handler) if len(messages) is not 0]
+            result.append(handled_messages)
+        return result
+    
+    def check_prefix(self, message: Message, handler: Callable
+    ) -> Tuple[bool, List[Message]]:
+        # 找到 触发 handler 所需的所有消息
+        type_list = Node.handler_call_by_message_types[handler]
+        for type in type_list:
+            # 根据每个 消息类型去找历史消息
+            for past_message in reversed(self.message_map[type]):
+                # 遍历消息列表
+                ...
+        return [...]
+        
     @classmethod
     def process(cls, message_type_list: List[str]) -> Callable:
         def decorator(func: Callable):
@@ -46,17 +75,3 @@ class Node(AbstractActor):
             return func
 
         return decorator
-
-    def handle_message(
-        self, message: Message, *args: Any, **kwargs: Any
-    ) -> Any:
-        # 根据 message name，在 message_handlers 中找 handler
-        # 根据 hendler 在 handler_call_by_message_types 找 handler 对应的 message_types
-        # 在 message_map 中找 各个 message_types 的历史消息是否全到达，保证 task_id 一致
-        # if True: 
-        #   bundle messages's content as bundle_content:[content1, content2, ...] that its order is consisten with message_types
-        #   target_message = handle(bundle_content)
-        #   return target_message
-        # else:
-        #   pass
-        ...

@@ -18,10 +18,19 @@ class Router(AbstractActor):
         self.spawn_new_actor(NodeGate, self._node_addr.name)
 
     def on_receive(self, message: Message):
-        # 区分 message 是 left gate 还是 right gate; 
-        # [QA:DE]: left gate: QA; right gate: DE
-        # left -> right; right -> left;
-        ...
+        # 新消息添加至邮箱
+        self._message_box.append(message)
+        # 区分几个事情：
+        # message只能发送给NodeGate，区分这个message是从哪个NodeGate发送过来
+        if message.from_node_type_name == self._node_gate_left:
+            self._send(
+                message, self._node_gate_type_address_dict[self._node_gate_right]
+            )
+
+        elif message.from_node_type_name == self._node_gate_right:
+            self._send(
+                message, self._node_gate_type_address_dict[self._node_gate_left]
+            )
 
     def spawn_new_actor(self, cls, node_gate_link_type):
         # 生成 node_gate
