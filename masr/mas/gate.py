@@ -2,13 +2,11 @@
 # 充当网络参与者系统中的管理实体，处理节点之间的消息并相应地路由它们
 # Singleton , 确保每个 gate 类型(QA gate / PM gate)只有一个实例
 
-from typing import List, Tuple, Dict, Set
+from typing import Dict, Set
 
-from .message import Message
+from masr.typing.message import Message
 from .actor import AbstractActor
-from .address import MultiAddr
 import random
-import copy
 
 
 class NodeGate(AbstractActor):

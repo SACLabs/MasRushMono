@@ -1,30 +1,10 @@
 # 解析回传的graph数据，存入node和edge visual dataclass，用于 visulization
-from dataclasses import dataclass, field
-from typing import Any, Dict, List
 import networkx as nx
 
-
-@dataclass
-class VisualNode:
-    id: str
-    properties: Dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass
-class VisualEdge:
-    source: str
-    target: str
-    label: str
-    key: int
-    properties: Dict[str, Any] = field(default_factory=dict)
+from masr.typing.graph import VisualNode, VisualEdge, VisualGraph
 
 
 # 一个总的dataclass
-@dataclass
-class VisualGraph:
-    graph: nx.MultiDiGraph
-    nodes: List[VisualNode]
-    edges: List[VisualEdge]
 
 
 # 将图数据存入dataclass用于可视化

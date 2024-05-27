@@ -3,16 +3,12 @@ ENV -- --> MAS -> ALGO -> MAS -> ENV
 
 """
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI
 import httpx
 import uvicorn
-from pydantic import BaseModel
 from singleton import singleton
-from typing import List
 
-from message import Message
-from task import Task
-from graph import Graph
+from masr.typing import Env2MAS, MAS2Env, Algo2MAS, MAS2Algo
 
 app = FastAPI()
 
@@ -37,24 +33,6 @@ class MAS:
     def run(self, task):
         self.graph.run(task)
 
-
-class Env2MAS(BaseModel):
-    demand: str = None # 用户的编码需求
-    result: str = None # 这里是源代码
-    report: str = None # 包含performance和CI通过率等·
-
-class MAS2Env(BaseModel):
-    result: str # 这里是源代码
-    history: str # 从log中可以提取看板信息
-    graph: Graph # agent组织结构
-
-class Algo2MAS(BaseModel):
-    graph: Graph
-    task: Task
-
-class MAS2Algo(BaseModel):
-    graph: Graph
-    history: List[Message]
 
 @app.post("/receive_from_env/")
 async def receive_from_env(data: Env2MAS):

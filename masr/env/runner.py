@@ -12,12 +12,11 @@ from .utils import uncompressed_file, parse_file_name
 
 app = Flask(__name__)
 
-mas_url = "http://example.com/env_mas"
 venv_path = "/path/venv_path"
 task_history_path = "/path/history"
 
 
-def test_source_code(source_code_path):
+def run_pytest(source_code_path):
     # 载入预先创建好的虚拟环境
     json_report_path = os.path.join(source_code_path, "report.json")
     pytest_command = [
@@ -34,7 +33,7 @@ def test_source_code(source_code_path):
     return report_data["summary"]
 
 
-def cprofile_test(source_code_path):
+def run_cprofile(source_code_path):
     # 编辑run.sh文件，追加虚拟环境进去
     run_script_path = os.path.join(source_code_path, "run.sh")
     activate_command = f". {venv_path}/bin/activate\n"
@@ -68,16 +67,27 @@ def cprofile_test(source_code_path):
         profile_data[f"{func_name[0]}:{func_name[1]}:({func_name[2]})"] = func_stats
     return profile_data
 
+@massage_handler()
+def env_to_mas(task_id: str) -> dict:
+    """_summary_
 
-def env_to_mas(test_result, performance_result):
+    Args:
+        mas_url (_type_): _description_
+    Return:
+        test_result (_type_): _description_
+        performance_result (_type_): _description_
+    """
     # 发送run.sh, test_result, performance_result
-    run_script_path = "./run.sh"
-    file = open(run_script_path, "rb")
-    requests.post(
-        mas_url,
-        file=file,
-        data={"test_result": test_result, "performance_result": performance_result},
-    )
+    # run_script_path = "./run.sh"
+    # file = open(run_script_path, "rb")
+    # requests.post(
+    #     mas_url,
+    #     file=file,
+    #     data={"test_result": test_result, "performance_result": performance_result},
+    # )
+    mas_url = get_mas_url(task_id)
+    test_result, performance_result = get_results_by_url(mas_url)
+    return {mas_url: {"run.sh": run_script_path,"test_result": test_result, "performance_result": performance_result}}
 
 
 def convert_src_code_to_uml_structure(source_code_path):
@@ -90,14 +100,16 @@ def append_task_history(task_id, test_result, performance_result):
         f.write(test_result)
         f.write(performance_result)
 
+def mas_to_env():
+    pass
+
 
 @app.route("/mas_to_env")
 def pipeline(compressed_source_code):
     # TODO，ID蕴藏在文件的名字中
-    uncompressed_file_path = uncompressed_file(compressed_source_code)
-    task_id = parse_file_name(compressed_source_code.filename)
-    test_result = test_source_code(uncompressed_file_path)
-    performance_result = cprofile_test(uncompressed_file_path)
+    task_id, uncompressed_file_path = uncompressed_file(compressed_source_code)
+    test_result = run_pytest(uncompressed_file_path)
+    performance_result = run_cprofile(uncompressed_file_path)
     env_to_mas({"test_result": test_result, "performance_result": performance_result})
     append_task_history(task_id, test_result, performance_result)
 

@@ -1,35 +1,12 @@
 # This class define the agent board
 # used by env, env get the task implementation details from mas, and present the task state of each agent.
 
-from dataclasses import dataclass, field
-from typing import List, Optional
-from enum import Enum
 from datetime import datetime
 
-
-class TaskStatus(Enum):
-    CREATED = "C"
-    IN_PROGRESS = "P"
-    COMPLETED = "X"
-    FAILED = "F"
+from masr.typing.task import TaskStatus, TaskItem
 
 
-@dataclass
-class Task:
-    # must have
-    name: str
-    description: str
-    status: TaskStatus
-    # optional
-    tags: Optional[List[str]] = field(default_factory=list)
-    subtasks: Optional[List['Task']] = field(default_factory=list)
-    owner: Optional[List] = field(default_factory=list)
-    priority: Optional[int] = 0
-    due_date: Optional[datetime] = None
-    created_time: Optional[datetime] = field(default_factory=datetime.now)
-
-
-def task_to_todotxt(task_des: Task, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)
+def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)
     # todotxt components, task status
     parts = [task_des.status.value]
 
@@ -69,7 +46,7 @@ def task_to_todotxt(task_des: Task, indent_level: int = 0) -> str:  # convert da
 
 if __name__ == "__main__":
     # a example task from mas
-    task_desc = Task(
+    task_desc = TaskItem(
         name="Task_A",
         description="This is an example task.",
         status=TaskStatus.IN_PROGRESS,
@@ -77,13 +54,13 @@ if __name__ == "__main__":
         owner=["agent1", "agent2"],
         priority=1,
         due_date=datetime(2024, 6, 30),
-        subtasks=[Task(
+        subtasks=[TaskItem(
                 name="Task_A_1",
                 description="This is the first subtask.",
                 status=TaskStatus.CREATED,
                 owner=['agent1'],
                 priority=2),
-                Task(
+                TaskItem(
                 name="Subtask_A_2",
                 description="This is the second subtask.",
                 status=TaskStatus.COMPLETED,

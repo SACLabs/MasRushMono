@@ -1,10 +1,9 @@
-import logging
 from abc import ABCMeta
 from typing import Any, Callable, Dict, List, Tuple
 
 
 from actor import AbstractActor
-from message import Message
+from masr.typing.message import Message
 from gate import NodeGate
 
 

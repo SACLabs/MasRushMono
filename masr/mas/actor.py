@@ -7,9 +7,8 @@
 # https://ao.feishu
 
 from typing import Set, Union, List
-from message import Message
 
-from .message import Message
+from masr.typing.message import Message
 from .address import MultiAddr
 
 class AbstractActor():

@@ -1,11 +1,8 @@
 # router
 # 负责管理 A:B 间消息的路由、生成新的 A Gate 与 B Gate
 
-from typing import List, Tuple
-import copy
-from .message import Message
+from masr.typing.message import Message
 from .actor import AbstractActor
-from address import MultiAddr
 from gate import NodeGate
 
 
