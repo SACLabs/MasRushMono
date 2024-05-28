@@ -1,10 +1,20 @@
 # 解析回传的graph数据，存入node和edge visual dataclass，用于 visulization
+import matplotlib.pyplot as plt
 import networkx as nx
 
 from masr.typing.graph import VisualNode, VisualEdge, VisualGraph
 
 
-# 一个总的dataclass
+# graph visualization 的入口
+def graph_start(graph: nx.MultiDiGraph) -> None:
+    graph_data = from_networkx_graph(graph)
+    graph_draw(graph_data)
+
+
+# 作图，待扩充
+def graph_draw(graph_data: VisualGraph) -> None:
+    nx.draw(graph_data.graph)
+    plt.savefig()
 
 
 # 将图数据存入dataclass用于可视化

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Tuple
+import networkx as nx
 
 from masr.mas.node import Node
 

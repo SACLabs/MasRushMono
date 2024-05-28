@@ -6,6 +6,7 @@ from datetime import datetime
 from masr.typing.task import TaskStatus, TaskItem, TaskHistory
 
 
+# 看板入口
 def kanban_start(task_item: TaskItem, task_history: TaskHistory) -> None:
     task = task_to_todotxt(task_item)
     history = task_history_to_todotxt(task_history)
@@ -15,6 +16,7 @@ def kanban_start(task_item: TaskItem, task_history: TaskHistory) -> None:
         hist_file.write(history)
 
 
+# 将task写为todotxt
 def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)
     # todotxt components, task status
     parts = [task_des.status.value]
@@ -53,6 +55,7 @@ def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # conver
     return "\n".join(result)
 
 
+# 将history写为todotxt
 def task_history_to_todotxt(task_his: TaskHistory) -> str:
     results = []
     for event in task_his.history:
