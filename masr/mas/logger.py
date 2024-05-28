@@ -1,5 +1,5 @@
-# logs
-# 记录类属性变化
+# loggger
+# 记录 Node 过往活动
 
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Tuple
