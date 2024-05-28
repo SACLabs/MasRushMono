@@ -13,6 +13,11 @@ from graph import Graph
 task相当于是一个给MAS系统的prompt，尽量简单，无状态
 """
 
+class TaskStatus(Enum):
+    CREATED = "C"
+    IN_PROGRESS = "P"
+    COMPLETED = "X"
+    FAILED = "F"
 
 @dataclass
 class TaskGraph:
@@ -23,14 +28,6 @@ class TaskGraph:
     status: TaskStatus = TaskStatus.CREATED
     priority: int = 0
     sub_tasks: List['TaskGraph'] = field(default_factory=list)
-
-
-class TaskStatus(Enum):
-    CREATED = "C"
-    IN_PROGRESS = "P"
-    COMPLETED = "X"
-    FAILED = "F"
-
 
 @dataclass
 class TaskItem:
@@ -48,6 +45,8 @@ class TaskItem:
 
 @dataclass
 class TaskHistory:
+    time_stamp: datetime
+
 """history = {"t0": {C: "Task1@A", "Task2@B"}, {P: "Task2@B"}, {X: "Task1@A"}},
            "t1": task_changed_state, }"""
     history: Dict[str, List[str]] = field(default_factory=dict)
