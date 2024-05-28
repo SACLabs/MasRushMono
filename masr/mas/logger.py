@@ -1,32 +1,110 @@
 # logs
 # 记录类属性变化
 
-from loguru import logger
+from dataclasses import dataclass, field
+from typing import Dict, Any, List, Tuple
+from typing.task import TaskStatus, Message
+from mas.node import Node
 
-def log_changes(*attrs):
-    def decorator(cls):
-        original_setattr = cls.__setattr__
-
-        def new_setattr(self, name, value):
-            if name in attrs and hasattr(self, name) and getattr(self, name) != value:
-                logger.info(f"Attribute: 【'{name}'】; new value: 【{value}】")
-            original_setattr(self, name, value)
+@dataclass
+class MASLog:
+    node_name: str
+    task_id: str
+    
+    handle_name: str
+    timestamp: str
+    stage: TaskStatus
+    
+# sample
+class Producer(Node):
+    def __init__(self):
+        ...
+    
+    @Node.process(["xxx:Producer"])
+    def produce(self):
+        # 生产商品
+        ...
         
-        cls.__setattr__ = new_setattr
-        return cls
-    return decorator
+    @Node.process(["Consumer:Producer"])
+    def transport(self):
+        # 传输商品
+        ...
 
-# # 应用装饰器到类 A
-# @log_changes('grass')
-# class A:
-#     def __init__(self, grass, tree):
-#         self.grass = grass
-#         self.tree = tree
+class Consumer(Node):
+    def __init__(self):
+        ...
+    
+    @Node.process(["xxx:Consumer"])
+    def consume(self):
+        # 购买商品
+        ...
+    
+    @Node.process(["Producer:Consumer"])
+    def act(self):
+        # 使用商品
+        ...
+        
 
-# # 应用装饰器到类 B
-# @log_changes('bottle', 'water')
-# class B:
-#     def __init__(self, bottle, water, cup):
-#         self.bottle = bottle
-#         self.water = water
-#         self.cup = cup
+class MASLogger(Node):
+    def __init__(self):
+        self.logbook: List[MASLog]
+        '''
+        [
+            [ 
+                "node_name": "producer_A",
+                "task_id":  "0",
+                handle_name: "produce",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "IN_PROGRESS"
+            ],
+            [ 
+                "node_name": "consumer_A",
+                "task_id":  "0",
+                handle_name: "consume",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "IN_PROGRESS"
+            ],
+            [ 
+                "node_name": "producer_A",
+                "task_id":  "0",
+                handle_name: "produce",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "COMPLETED"
+            ],
+            [ 
+                "node_name": "consumer_A",
+                "task_id":  "0",
+                handle_name: "consume",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "COMPLETED"
+            ],
+            [ 
+                "node_name": "producer_A",
+                "task_id":  "0",
+                handle_name: "transport",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "IN_PROGRESS"
+            ],
+            [ 
+                "node_name": "producer_A",
+                "task_id":  "0",
+                handle_name: "transport",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "COMPLETED"
+            ],
+            [ 
+                "node_name": "consumer_A",
+                "task_id":  "0",
+                handle_name: "act",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "IN_PROGRESS"
+            ],
+            [ 
+                "node_name": "consumer_A",
+                "task_id":  "0",
+                handle_name: "act",
+                timestamp: "xxxx-xx-xx-xxxx",
+                stage: "COMPLETED"
+            ],
+        ]
+        '''
