@@ -2,9 +2,10 @@
 # 记录 Node 过往活动
 
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, Optional
 from typing.task import TaskStatus, Message
 from mas.node import Node
+from datetime import datetime
 
 @dataclass
 class MASLog:
@@ -47,8 +48,34 @@ class Consumer(Node):
 
 class MASLogger(Node):
     def __init__(self):
-        self.logbook: List[MASLog]
-        '''
+        self.logbook: List[MASLog] = []
+        
+    def on_receive(self, message: Message):
+        self.log_message(message)
+    
+    def log_message(self, message, stage):
+        # message 转 MASLog 并存入logbook 中
+        log_entry = MASLog(
+            node_name=message.node_name,
+            task_id=message.task_id,
+            handle_name=message.handle_name,
+            timestamp=datetime.now(),
+            stage=stage
+        )
+        self.logbook.append(log_entry)
+        
+    def get_logs(self, task_id: Optional[str]=None, node_name: Optional[str]=None) -> List[MASLog]:
+        filtered_logs = []
+        # 根据 task_id 或 node_name 找到对应消息存入 filtered_logs 中
+        # 根据 时间戳排序 返回 Log
+        return sorted(filtered_logs, key=lambda log: log.timestamp)
+
+    def get_result(self, task_id: str = None) -> Optional[MASLog]:
+        filtered_logs = []
+        # 当前task_id
+        
+        return max(filtered_logs, key=lambda log: log.timestamp, default=None)
+    '''
         [
             [ 
                 "node_name": "producer_A",
