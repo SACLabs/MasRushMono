@@ -19,7 +19,7 @@ def mock_sending(mocker):
     return mocker.patch('sender.sending_from_mas_to_env', new_callable=AsyncMock)
 
 def test_receiving_endpoint(mock_pipeline, mock_sending):
-    message = {"task_id": "1", "demand": "test_demand", "pytest_result": {}, "cprofile_performance": {}, "mas_ip": "127.0.0.1"}
+    message = {"task_id": "1", "demand": "test_demand", "pytest_result": {}, "cprofile_performance": {}}
     mock_pipeline.return_value = MAS2Env(task_id="1", result="result", history=TaskHistory(), graph=Graph(nodes={}, edges=[]))
     response = client.post("/receive_from_env/", json=message)
     assert response.status_code == 200

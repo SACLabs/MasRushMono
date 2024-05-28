@@ -1,9 +1,8 @@
 import pytest
 from masr.mas.main import MAS, pipeline
 
-from masr.typing.env import Env2MAS, MAS2Env, Algo2MAS, MAS2Algo
-from masr.mas.graph import Graph
-from masr.mas.task import TaskGraph, TaskHistory
+from masr.typing.env import Env2MAS, MAS2Env, Algo2MAS
+from masr.typing.graph import Graph
 from unittest.mock import Mock
 
 @pytest.fixture
@@ -34,7 +33,7 @@ def mock_pipeline_dependencies(mocker):
 
 @pytest.mark.asyncio
 async def test_pipeline(mock_pipeline_dependencies):
-    data = Env2MAS(task_id="1", demand="test_demand", pytest_result={}, cprofile_performance={}, mas_ip="127.0.0.1")
+    data = Env2MAS(task_id="1", demand="test_demand", pytest_result={}, cprofile_performance={})
     result = await pipeline(data)
     assert isinstance(result, MAS2Env)
     assert result.result == "mock_result"
