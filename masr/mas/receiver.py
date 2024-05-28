@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from mas import pipeline
-from sender import sending_from_mas_to_env
+from masr.mas.main import pipeline
+from masr.mas.sender import sending_from_mas_to_env
 from masr.typing.env import Env2MAS
 
 app = FastAPI()
