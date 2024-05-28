@@ -2,9 +2,9 @@ from abc import ABCMeta
 from typing import Any, Callable, Dict, List, Tuple
 
 
-from actor import AbstractActor
+from .actor import AbstractActor
 from masr.typing.message import Message
-from gate import NodeGate
+from .gate import NodeGate
 
 
 class Preprocessor(metaclass=ABCMeta):

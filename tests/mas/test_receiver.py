@@ -1,4 +1,8 @@
 import pytest
+import pathlib
+import sys
+folder_path = pathlib.Path(__file__)
+sys.path.append(str(folder_path.parent.parent.parent))
 from fastapi.testclient import TestClient
 from masr.mas.receiver import app
 from masr.mas.main import pipeline
@@ -20,7 +24,7 @@ def mock_sending(mocker):
 
 def test_receiving_endpoint(mock_pipeline, mock_sending):
     message = {"task_id": "1", "demand": "test_demand", "pytest_result": {}, "cprofile_performance": {}}
-    mock_pipeline.return_value = MAS2Env(task_id="1", result="result", history=TaskHistory(), graph=Graph(nodes={}, edges=[]))
+    mock_pipeline.return_value = MAS2Env(task_id="1", result="result", history=TaskHistory(), graph=Graph())
     response = client.post("/receive_from_env/", json=message)
     assert response.status_code == 200
     mock_pipeline.assert_called_once()

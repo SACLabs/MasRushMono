@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, Optional
 import networkx as nx
 
 from masr.mas.node import Node
@@ -29,8 +29,8 @@ class VisualGraph:
 
 @dataclass
 class Graph:
-    nodes: Dict[Node]
-    edges: List[Tuple[Node,Node]]
+    nodes: Optional[Dict[Node]]
+    edges: Optional[List[Tuple[Node,Node]]]
 
     @classmethod
     def init(cls, graph_dict: Dict[Node, List[Node]]) -> None:

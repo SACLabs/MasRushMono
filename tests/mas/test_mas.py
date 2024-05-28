@@ -1,4 +1,9 @@
 import pytest
+import pathlib
+import sys
+folder_path = pathlib.Path(__file__)
+sys.path.append(str(folder_path.parent.parent.parent))
+
 from masr.mas.main import MAS, pipeline
 
 from masr.typing.env import Env2MAS, MAS2Env, Algo2MAS

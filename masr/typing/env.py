@@ -1,6 +1,6 @@
 from masr.typing.message import Message
-from typing import List
-from pydantic import BaseModel, Dict
+from typing import List, Dict
+from pydantic import BaseModel
 
 from masr.typing.graph import Graph
 from masr.typing.task import TaskGraph
