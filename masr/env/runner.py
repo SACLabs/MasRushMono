@@ -1,19 +1,9 @@
-# 负责和mas交互数据，并且提供统一的测试环境
-
-from flask import Flask, request
-import requests
-
 import os
 import subprocess
 import json
 import pstats
 
-from .utils import uncompressed_file, parse_file_name
-
-app = Flask(__name__)
-
 venv_path = "/path/venv_path"
-task_history_path = "/path/history"
 
 
 def run_pytest(source_code_path):
@@ -67,52 +57,14 @@ def run_cprofile(source_code_path):
         profile_data[f"{func_name[0]}:{func_name[1]}:({func_name[2]})"] = func_stats
     return profile_data
 
-@massage_handler()
-def env_to_mas(task_id: str) -> dict:
-    """_summary_
-
-    Args:
-        mas_url (_type_): _description_
-    Return:
-        test_result (_type_): _description_
-        performance_result (_type_): _description_
-    """
-    # 发送run.sh, test_result, performance_result
-    # run_script_path = "./run.sh"
-    # file = open(run_script_path, "rb")
-    # requests.post(
-    #     mas_url,
-    #     file=file,
-    #     data={"test_result": test_result, "performance_result": performance_result},
-    # )
-    mas_url = get_mas_url(task_id)
-    test_result, performance_result = get_results_by_url(mas_url)
-    return {mas_url: {"run.sh": run_script_path,"test_result": test_result, "performance_result": performance_result}}
-
 
 def convert_src_code_to_uml_structure(source_code_path):
     # 此处调用pylint将source code转为uml图
     pass
 
 
-def append_task_history(task_id, test_result, performance_result):
-    with open(os.path.join(task_history_path, task_id), "+w") as f:
-        f.write(test_result)
-        f.write(performance_result)
-
-def mas_to_env():
-    pass
-
-
-@app.route("/mas_to_env")
-def pipeline(compressed_source_code):
-    # TODO，ID蕴藏在文件的名字中
-    task_id, uncompressed_file_path = uncompressed_file(compressed_source_code)
-    test_result = run_pytest(uncompressed_file_path)
-    performance_result = run_cprofile(uncompressed_file_path)
-    env_to_mas({"test_result": test_result, "performance_result": performance_result})
-    append_task_history(task_id, test_result, performance_result)
-
-
-if __name__ == "__main__":
-    app.run()
+def run(source_code_path):
+    convert_src_code_to_uml_structure(source_code_path)
+    pytest_result = run_pytest(source_code_path)
+    performance_result = run_cprofile(source_code_path)
+    return (pytest_result, performance_result)
