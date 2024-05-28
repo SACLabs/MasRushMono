@@ -51,16 +51,21 @@ class TaskItem:
 #            "t1": task_changed_state, }"""
 #     history: Dict[str, List[str]] = field(default_factory=dict)
 
+
 @dataclass
 class TaskEvent:
-    name: str
+    task: TaskItem
     update_time: datetime
     attribute: str
     old_value: Any
     new_value: Any
 
+
 @dataclass
 class TaskHistory:
     history: List[TaskEvent] = field(default_factory=list)
 
-    def append_history(self, task_name:str, attribute:str, old:Any, new: Any):
+    def append_history(self, task: TaskItem, attribute: str, old: Any, new: Any):
+        update_time = datetime.now()
+        event = TaskEvent(task, update_time, attribute, old, new)
+        self.history.append(event)
