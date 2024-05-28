@@ -12,7 +12,6 @@ class Env2MAS(BaseModel):
     demand: str = None  # 用户的编码需求
     pytest_result: Dict = None  # CI测试结果
     cprofile_performance: Dict = None  # cprofile performance·
-    mas_ip: str = None
 
 
 class MAS2Env(BaseModel):
