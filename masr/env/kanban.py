@@ -4,6 +4,7 @@
 from datetime import datetime
 
 from masr.typing.task import TaskStatus, TaskItem
+def entre(history: str):
 
 
 def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)

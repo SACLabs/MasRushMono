@@ -1,7 +1,7 @@
 # TODO
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Tuple, Optional
+from typing import List, Any, Optional
 from enum import Enum
 import uuid
 
@@ -43,10 +43,24 @@ class TaskItem:
     due_date: Optional[datetime] = None
     created_time: Optional[datetime] = field(default_factory=datetime.now)
 
+# @dataclass
+# class TaskHistory:
+#     time_stamp: datetime
+#
+# """history = {"t0": {C: "Task1@A", "Task2@B"}, {P: "Task2@B"}, {X: "Task1@A"}},
+#            "t1": task_changed_state, }"""
+#     history: Dict[str, List[str]] = field(default_factory=dict)
+
+@dataclass
+class TaskEvent:
+    name: str
+    update_time: datetime
+    attribute: str
+    old_value: Any
+    new_value: Any
+
 @dataclass
 class TaskHistory:
-    time_stamp: datetime
+    history: List[TaskEvent] = field(default_factory=list)
 
-"""history = {"t0": {C: "Task1@A", "Task2@B"}, {P: "Task2@B"}, {X: "Task1@A"}},
-           "t1": task_changed_state, }"""
-    history: Dict[str, List[str]] = field(default_factory=dict)
+    def append_history(self, task_name:str, attribute:str, old:Any, new: Any):
