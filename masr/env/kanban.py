@@ -3,8 +3,16 @@
 
 from datetime import datetime
 
-from masr.typing.task import TaskStatus, TaskItem
-def entre(history: str):
+from masr.typing.task import TaskStatus, TaskItem, TaskHistory
+
+
+def kanban_start(task_item: TaskItem, task_history: TaskHistory) -> None:
+    task = task_to_todotxt(task_item)
+    history = task_history_to_todotxt(task_history)
+    with open('task.txt', 'w') as task_file:
+        task_file.write(task)
+    with open('task_history.txt', 'w') as hist_file:
+        hist_file.write(history)
 
 
 def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # convert dataclass into todotxt string (in list)
@@ -43,6 +51,28 @@ def task_to_todotxt(task_des: TaskItem, indent_level: int = 0) -> str:  # conver
 
     # return a todotxt string
     return "\n".join(result)
+
+
+def task_history_to_todotxt(task_his: TaskHistory) -> str:
+    results = []
+    for event in task_his.history:
+        # Include timestamp as creation date
+        parts = [event.update_time.strftime('%Y-%m-%d')]
+
+        # Description of the event
+        description = f"{event.attribute} changed from {str(event.old_value)} to {str(event.new_value)}"
+        parts.append(description)
+
+        # Include project tag (task_name)
+        parts.append(f"+{event.task.name}")
+
+        # Include context tag (attribute)
+        parts.append(f"@{event.attribute}")
+
+        # Join parts to form the line
+        result = ' '.join(parts)
+        results.append(result)
+    return "\n".join(results)
 
 
 if __name__ == "__main__":
