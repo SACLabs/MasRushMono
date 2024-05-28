@@ -1,9 +1,9 @@
 from masr.typing.message import Message
-from typing import List, Dict, File
+from typing import List, Dict
 
 
-from masr.typing.graph import Graph
-from masr.typing.task import TaskGraph
+# from masr.typing.graph import Graph
+# from masr.typing.task import TaskGraph
 
 from pydantic import BaseModel
 
@@ -20,14 +20,14 @@ class MAS2Env(BaseModel):
     task_id: str = None
     source_code: bytes  # 这里是源代码tar.gz文件
     history: str  # 从log中可以提取看板信息
-    graph: Graph  # agent组织结构
+    graph: None  # agent组织结构
 
 
 class Algo2MAS(BaseModel):
-    graph: Graph
-    task: TaskGraph
+    graph: None
+    task: None
 
 
 class MAS2Algo(BaseModel):
-    graph: Graph
+    graph: None
     history: List[Message]

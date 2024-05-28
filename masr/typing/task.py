@@ -64,3 +64,4 @@ class TaskHistory:
     history: List[TaskEvent] = field(default_factory=list)
 
     def append_history(self, task_name:str, attribute:str, old:Any, new: Any):
+        pass
