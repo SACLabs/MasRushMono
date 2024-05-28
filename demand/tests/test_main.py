@@ -1,6 +1,8 @@
 # This is test files
-from snake import Direc, Map, PointType, Pos, Snake
-
+from snake_base.direc import Direc
+from snake_base.point import PointType
+from snake_base.pos import Pos
+from snake_base.map import Map
 
 def test_init():
     m = Map(5, 5)
