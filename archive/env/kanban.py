@@ -3,7 +3,7 @@
 
 from datetime import datetime
 
-from masr.typing.task import TaskStatus, TaskItem, TaskHistory
+from archive.typing.task import TaskStatus, TaskItem, TaskHistory
 
 
 # 看板入口

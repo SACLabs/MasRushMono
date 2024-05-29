@@ -1,8 +1,8 @@
 import pytest
-from masr.mas.main import MAS, pipeline
+from archive.mas.main import MAS, pipeline
 
-from masr.typing.env import Env2MAS, MAS2Env, Algo2MAS
-from masr.typing.graph import Graph
+from archive.typing.env import Env2MAS, MAS2Env, Algo2MAS
+from archive.typing.graph import Graph
 from unittest.mock import Mock
 
 @pytest.fixture

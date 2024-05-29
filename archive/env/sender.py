@@ -1,6 +1,6 @@
 # ENV2MAS
 from typing import Dict
-from masr.typing.env import MAS2Env
+from archive.typing.env import MAS2Env
 import httpx
 
 

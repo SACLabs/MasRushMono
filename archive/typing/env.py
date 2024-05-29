@@ -1,13 +1,14 @@
-from masr.typing.message import Message
+from archive.typing.message import Message
 from typing import List
 from pydantic import BaseModel, Dict
 
-from masr.typing.graph import Graph
-from masr.typing.task import TaskGraph
-from masr.typing.task import TaskHistory
+from archive.typing.graph import Graph
+from archive.typing.task import TaskGraph
+from archive.typing.task import TaskHistory
 
 
 class Env2MAS(BaseModel):
+    # RunningReport + Demand
     task_id: str = None # 任务的唯一ID
     demand: str = None  # 用户的编码需求
     pytest_result: Dict = None  # CI测试结果

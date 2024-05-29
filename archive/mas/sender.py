@@ -1,5 +1,5 @@
 # MAS2Env
-from masr.typing.env import MAS2Env
+from archive.typing.env import MAS2Env
 import httpx
 
 async def sending_from_mas_to_env(ENV_SERVER_URL, data: MAS2Env):

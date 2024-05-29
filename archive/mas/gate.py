@@ -4,7 +4,7 @@
 
 from typing import Dict, Set
 
-from masr.typing.message import Message
+from archive.typing.message import Message
 from .actor import AbstractActor
 import random
 

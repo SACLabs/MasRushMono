@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from masr.typing.graph import VisualNode, VisualEdge, VisualGraph
+from archive.typing.graph import VisualNode, VisualEdge, VisualGraph
 
 
 # graph visualization 的入口

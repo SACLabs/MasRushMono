@@ -8,7 +8,7 @@
 
 from typing import Set, Union, List
 
-from masr.typing.message import Message
+from archive.typing.message import Message
 from .address import MultiAddr
 
 class AbstractActor():

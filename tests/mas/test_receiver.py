@@ -1,11 +1,11 @@
 import pytest
 from fastapi.testclient import TestClient
-from masr.mas.receiver import app
-from masr.mas.main import pipeline
-from masr.typing.env import Env2MAS, MAS2Env
+from archive.mas.receiver import app
+from archive.mas.main import pipeline
+from archive.typing.env import Env2MAS, MAS2Env
 from unittest.mock import patch, AsyncMock
-from masr.typing.task import TaskGraph, TaskHistory
-from masr.typing.graph import Graph
+from archive.typing.task import TaskGraph, TaskHistory
+from archive.typing.graph import Graph
 
 
 client = TestClient(app)

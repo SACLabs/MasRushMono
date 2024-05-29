@@ -4,7 +4,7 @@ ENV -- --> MAS -> ALGO -> MAS -> ENV
 
 from singleton import singleton
 
-from masr.typing.env import Env2MAS, MAS2Env, Algo2MAS, MAS2Algo
+from archive.typing.env import Env2MAS, MAS2Env, Algo2MAS, MAS2Algo
 
 
 @singleton

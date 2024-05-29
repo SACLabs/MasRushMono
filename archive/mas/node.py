@@ -3,7 +3,7 @@ from typing import Any, Callable, Dict, List, Tuple
 
 
 from actor import AbstractActor
-from masr.typing.message import Message
+from archive.typing.message import Message
 from gate import NodeGate
 
 
