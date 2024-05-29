@@ -37,6 +37,7 @@ lint:             ## Run pep8, black, mypy linters.
 	poetry run black -l 79 --check tests/
 	poetry run mypy --explicit-package-bases --ignore-missing-imports masr/
 
+
 .PHONY: test
 test: lint        ## Run tests and generate coverage report.
 	poetry run pytest -v --cov-config .coveragerc --cov=masr -l --tb=short --maxfail=1 tests/
