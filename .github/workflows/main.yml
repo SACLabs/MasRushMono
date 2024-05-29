@@ -29,10 +29,10 @@ jobs:
       - name: Install poetry
         run: curl -sSL https://install.python-poetry.org | python3 -
       - name: Install project
-        run: make virtualenv; make install; which flake8
+        run: make virtualenv; make install; flake8 --version
       - name: Show Enviornment
-        run: make show; which flake8
+        run: make show
       - name: Run linter
-        run: make lint; which flake8
+        run: make lint
       - name: Run tests
         run: make test
