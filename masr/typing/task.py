@@ -1,23 +1,25 @@
 # TODO
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Any, Optional
 from enum import Enum
-import uuid
+from typing import Any, List, Optional
 
-from message import Message
 from graph import Graph
+from message import Message
 
 """
 如果把MAS系统当成一个群体智能系统，那么
 task相当于是一个给MAS系统的prompt，尽量简单，无状态
 """
 
+
 class TaskStatus(Enum):
     CREATED = "C"
     IN_PROGRESS = "P"
     COMPLETED = "X"
     FAILED = "F"
+
 
 @dataclass
 class TaskGraph:
@@ -27,7 +29,8 @@ class TaskGraph:
     task_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     status: TaskStatus = TaskStatus.CREATED
     priority: int = 0
-    sub_tasks: List['TaskGraph'] = field(default_factory=list)
+    sub_tasks: List["TaskGraph"] = field(default_factory=list)
+
 
 @dataclass
 class TaskItem:
@@ -37,11 +40,12 @@ class TaskItem:
     status: TaskStatus
     # optional
     tags: Optional[List[str]] = field(default_factory=list)
-    subtasks: Optional[List['TaskItem']] = field(default_factory=list)
+    subtasks: Optional[List["TaskItem"]] = field(default_factory=list)
     owner: Optional[List] = field(default_factory=list)
     priority: Optional[int] = 0
     due_date: Optional[datetime] = None
     created_time: Optional[datetime] = field(default_factory=datetime.now)
+
 
 # @dataclass
 # class TaskHistory:
@@ -65,7 +69,9 @@ class TaskEvent:
 class TaskHistory:
     history: List[TaskEvent] = field(default_factory=list)
 
-    def append_history(self, task: TaskItem, attribute: str, old: Any, new: Any):
+    def append_history(
+        self, task: TaskItem, attribute: str, old: Any, new: Any
+    ):
         update_time = datetime.now()
         event = TaskEvent(task, update_time, attribute, old, new)
         self.history.append(event)

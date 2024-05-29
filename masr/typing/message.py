@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import uuid
+from dataclasses import dataclass
 from typing import Union
 
 
@@ -14,4 +14,3 @@ class Message:
     from_agent_type: str = "None"
     from_node_type_name: str = "None"
     broadcasting: bool = True
-    
