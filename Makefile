@@ -32,8 +32,7 @@ fmt:              ## Format code using black & isort.
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
-	@echo $(ENV_PREFIX)
-	@echo $(USING_POETRY)
+	@echo "ENV_PREFIX" $(ENV_PREFIX)
 	$(ENV_PREFIX)flake8 masr/
 	$(ENV_PREFIX)black -l 79 --check masr/
 	$(ENV_PREFIX)black -l 79 --check tests/
