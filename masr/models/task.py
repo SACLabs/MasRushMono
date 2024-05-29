@@ -1,7 +1,8 @@
+from datetime import datetime
 from enum import Enum
 from typing import Any, List, Optional
+
 from pydantic import BaseModel, Field
-from datetime import datetime
 
 
 class TaskStatus(Enum):
@@ -19,15 +20,17 @@ class TaskItem(BaseModel):
     # optional
     tags: List[str] = Field(default_factory=list)
     subtasks: List["TaskItem"] = Field(default_factory=list)
-    owner: List = Field(default_factory=list)  # 确保owner的类型明确，如List[str]
+    owner: List = Field(
+        default_factory=list
+    )  # 确保owner的类型明确，如List[str]
     priority: Optional[int] = 0
     due_date: Optional[datetime] = None
     created_time: Optional[datetime] = Field(default_factory=datetime.now)
     updated_time: Optional[datetime] = None
 
     def update(self, attribute: str, new_value: Any):
-        if attribute == 'name':
-            raise AttributeError('This is a fixed attribute')
+        if attribute == "name":
+            raise AttributeError("This is a fixed attribute")
         setattr(self, attribute, new_value)
         self.updated_time = datetime.now()
 

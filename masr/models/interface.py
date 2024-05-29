@@ -1,7 +1,9 @@
 from typing import Dict
+
 from pydantic import BaseModel
-from .task import TaskHistory
+
 from .graph import GML
+from .task import TaskHistory
 
 
 class Demand(BaseModel):

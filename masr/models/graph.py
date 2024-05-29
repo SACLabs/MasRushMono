@@ -1,6 +1,6 @@
-from pydantic import BaseModel
 import networkx as nx
 from networkx import MultiDiGraph
+from pydantic import BaseModel
 
 
 class GML(BaseModel):
