@@ -26,23 +26,22 @@ install:          ## Install the project in dev mode.
 
 .PHONY: fmt
 fmt:              ## Format code using black & isort.
-	$(ENV_PREFIX)isort masr/
-	$(ENV_PREFIX)black -l 79 masr/
-	$(ENV_PREFIX)black -l 79 tests/
+	poetry run isort masr/
+	poetry run black -l 79 masr/
+	poetry run black -l 79 tests/
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
-	@echo "ENV_PREFIX" $(ENV_PREFIX)
-	$(ENV_PREFIX)flake8 masr/
-	$(ENV_PREFIX)black -l 79 --check masr/
-	$(ENV_PREFIX)black -l 79 --check tests/
-	$(ENV_PREFIX)mypy --ignore-missing-imports masr/
+	poetry run flake8 masr/
+	poetry black -l 79 --check masr/
+	poetry black -l 79 --check tests/
+	poetry mypy --ignore-missing-imports masr/
 
 .PHONY: test
 test: lint        ## Run tests and generate coverage report.
-	$(ENV_PREFIX)pytest -v --cov-config .coveragerc --cov=masr -l --tb=short --maxfail=1 tests/
-	$(ENV_PREFIX)coverage xml
-	$(ENV_PREFIX)coverage html
+	poetry run pytest -v --cov-config .coveragerc --cov=masr -l --tb=short --maxfail=1 tests/
+	poetry run coverage xml
+	poetry run coverage html
 
 .PHONY: watch
 watch:            ## Run tests on every change.
