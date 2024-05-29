@@ -27,4 +27,3 @@ Please provide the Python source code that satisfies the test cases and implemen
 ##  Reference
 
 https://github.com/chuyangliu/snake.git
-
