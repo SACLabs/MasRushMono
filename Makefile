@@ -33,9 +33,9 @@ fmt:              ## Format code using black & isort.
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
 	poetry run flake8 masr/
-	poetry black -l 79 --check masr/
-	poetry black -l 79 --check tests/
-	poetry mypy --ignore-missing-imports masr/
+	poetry run black -l 79 --check masr/
+	poetry run black -l 79 --check tests/
+	poetry run mypy --ignore-missing-imports masr/
 
 .PHONY: test
 test: lint        ## Run tests and generate coverage report.
