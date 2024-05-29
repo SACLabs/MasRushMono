@@ -1,10 +1,5 @@
 import pytest
-import pathlib
-import sys
-folder_path = pathlib.Path(__file__)
-sys.path.append(str(folder_path.parent.parent.parent))
-from masr.mas.sender import sending_from_mas_to_env
-import httpx
+from masr.mas.sender import sender
 from masr.typing.env import MAS2Env
 from unittest.mock import patch, AsyncMock
 from masr.typing.task import TaskGraph, TaskHistory

@@ -1,8 +1,10 @@
+"""
+这部分测试将检查 FastAPI 应用是否正确接收数据并将其存储到 Redis 中。
+"""
+
+
 import pytest
-import pathlib
-import sys
-folder_path = pathlib.Path(__file__)
-sys.path.append(str(folder_path.parent.parent.parent))
+
 from fastapi.testclient import TestClient
 from masr.mas.receiver import app
 from masr.mas.main import pipeline
@@ -14,18 +16,16 @@ from masr.typing.graph import Graph
 
 client = TestClient(app)
 
-@pytest.fixture
-def mock_pipeline(mocker):
-    return mocker.patch('receiver.pipeline', new_callable=AsyncMock)
 
 @pytest.fixture
-def mock_sending(mocker):
-    return mocker.patch('sender.sending_from_mas_to_env', new_callable=AsyncMock)
+def mock_message():
+    return {
+        "message": Env2MAS()
+    }
 
-def test_receiving_endpoint(mock_pipeline, mock_sending):
-    message = {"task_id": "1", "demand": "test_demand", "pytest_result": {}, "cprofile_performance": {}}
-    mock_pipeline.return_value = MAS2Env(task_id="1", result="result", history=TaskHistory(), graph=Graph())
-    response = client.post("/receive_from_env/", json=message)
+
+def test_receive_message():
+    # 发送一条消息到接收端
+    response = client.post("/receive_from_env/", json={"message": mock_message})
     assert response.status_code == 200
-    mock_pipeline.assert_called_once()
-    mock_sending.assert_called_once()
+    assert response.json() == {"message": "Data received and added to Redis"}
