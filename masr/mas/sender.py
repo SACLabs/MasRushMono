@@ -26,3 +26,7 @@ def sender():
             except requests.exceptions.RequestException as e:
                 print(f"Failed to send message: {str(e)}")
         time.sleep(1)
+
+
+if __name__ == "__main__":
+    sender()
