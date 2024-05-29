@@ -2,8 +2,8 @@ from typing import Dict
 
 from pydantic import BaseModel
 
-from masr.models.graph import GML
-from masr.models.task import TaskHistory
+from .graph import GML
+from .task import TaskHistory
 
 
 class Demand(BaseModel):
