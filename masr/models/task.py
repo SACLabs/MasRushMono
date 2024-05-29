@@ -30,7 +30,7 @@ class TaskItem(BaseModel):
 
     def update(self, attribute: str, new_value: Any):
         if attribute == "name":
-            raise AttributeError("This is a fixed attribute")
+            raise AttributeError("name cannot be updated")
         setattr(self, attribute, new_value)
         self.updated_time = datetime.now()
 
