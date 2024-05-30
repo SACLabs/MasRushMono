@@ -1,6 +1,6 @@
 from masr.models import interface
 from masr.models.graph import GML
-from masr.models.task import TaskItem, TaskHistory
+from masr.models.task import TaskStatus, TaskItem, TaskHistory
 
 mock_task_id = "mock_task_id"
 
@@ -32,17 +32,15 @@ mock_code = interface.SourceCode(
     },
 )
 
-task = TaskItem(
-    name = "test task",
-    description = "test task description",
-    status=TaskStatus.COMPLETED
+mock_task = TaskItem(
+    name="test task",
+    description="test task description",
+    status=TaskStatus.COMPLETED,
 )
 
-history = TaskHistory(
-    history=[task]
-)
+mock_history = TaskHistory(history=[mock_task])
 
-graph = GML(
+mock_graph = GML(
     content="""graph [
   directed 1
   multigraph 1
@@ -166,35 +164,32 @@ graph = GML(
 )
 
 
-# def pack_mas_to_env_msg(
-#     task_id, result: SourceCode, history: TaskHistory, graph: GML
-# ) -> Dict:
-#     return {task_id: {"result": result, "history": history, "graph": graph}}
-
 mock_sender = lambda x: x
-
 
 
 def test_sender_data_format():
     sender_data = interface.pack_mas_to_env_msg(
-        task_id=mock_task_id, result=mock_code, history=mock_history, graph=mock_graph
+        task_id=mock_task_id,
+        result=mock_code,
+        history=mock_history,
+        graph=mock_graph,
     )
     assert "task_id" in sender_data
     assert sender_data["task_id"] == mock_task_id
 
-    assert "demand" in sender_data
-    assert sender_data["demand"] == mock_demand
+    assert "result" in sender_data
+    assert sender_data["result"] == mock_code
 
-    assert "report" in sender_data
-    assert sender_data["report"] == mock_report
+    assert "history" in sender_data
+    assert sender_data["history"] == mock_history
 
-    assert "src" in sender_data
-    assert sender_data["src"] == mock_code
+    assert "graph" in sender_data
+    assert sender_data["graph"] == mock_graph
 
 
 def test_reciever_data_format():
     sender_data = interface.pack_env_to_mas_msg(
-        mock_task_id, mock_demand, mock_report, mock_code
+        mock_task_id, mock_code, mock_history, mock_graph
     )
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data

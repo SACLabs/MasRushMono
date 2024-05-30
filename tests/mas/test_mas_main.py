@@ -14,6 +14,3 @@
   - e. the changelog of task list
   - f. the graph of state transition
 """
-
-
-
