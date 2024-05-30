@@ -1,5 +1,4 @@
 import asyncio
-# from tests.test_base import report
 
 
 async def send(url):

@@ -1,8 +1,5 @@
 import asyncio
 
-# from typing import Dict
-# import uuid
-
 
 class Promise:
     def __init__(self, coro):
