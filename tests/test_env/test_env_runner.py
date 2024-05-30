@@ -33,3 +33,10 @@ def test_pipeline():
     pipeline.return_value = report
     pipeline_output = pipeline(pipeline_input)
     assert pipeline_output == report
+
+
+# TODO
+def test_kanban():
+    kanban = mock.Mock()
+    kanban.return_value = None
+    kanban_output = kanban(TaskHistory)
