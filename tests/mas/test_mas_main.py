@@ -25,21 +25,21 @@ from unittest import mock
 demand = Demand(content="mock demand")
 mock_history = TaskHistory(history=[task_desc])
 
-pipeline_input = {
+mas_input = {
     "task_id": task_id,
     "content": {"demand": demand, "report": report, "src": source_code},
 }
 
-pipeline_output = {
+mas_output = {
     "task_id": task_id,
     "content": {"result": source_code, "history": mock_history, "graph": gml},
 }
 
 
 # TODO 实现pipeline循环
-def test_pipeline():
+def test_mas_pipeline():
     mock_pipeline = mock.Mock()
-    mock_pipeline.return_value = pipeline_output
+    mock_pipeline.return_value = mas_output
     with mock.patch("masr.mas.main.pipeline", mock_pipeline):
-        output = mock_pipeline(pipeline_input)
-        assert pipeline_output == output
+        output = mock_pipeline(mas_input)
+        assert mas_output == output
