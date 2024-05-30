@@ -1,4 +1,7 @@
 from masr.models import interface
+from masr.models.task import TaskItem, TaskStatus
+
+from datetime import datetime
 
 gml = """graph [
   directed 1
@@ -177,4 +180,31 @@ source_code = interface.SourceCode(
         "procoder/utils/__init__.py": "mock utils init code",
         "procoder/utils/my_typing.py": "mock my typing code",
     },
+)
+
+
+task_desc = TaskItem(
+    name="Task_A",
+    description="This is an example task.",
+    status=TaskStatus.IN_PROGRESS,
+    tags=["project1"],
+    owner=["agent1", "agent2"],
+    priority=1,
+    due_date=datetime(2024, 6, 30),
+    subtasks=[
+        TaskItem(
+            name="Task_A_1",
+            description="This is the first subtask.",
+            status=TaskStatus.CREATED,
+            owner=["agent1"],
+            priority=2,
+        ),
+        TaskItem(
+            name="Subtask_A_2",
+            description="This is the second subtask.",
+            status=TaskStatus.COMPLETED,
+            owner=["agent2"],
+            priority=1,
+        ),
+    ],
 )
