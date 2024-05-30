@@ -1,13 +1,13 @@
 from datetime import datetime
 from pathlib import Path
-
+import uuid
 from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
 
 
-gml = Path(".test.gml").read_text()
+gml = Path("tests/test.gml").read_text()
 
-task_id = "mock_task_id"
+task_id = uuid.uuid4()
 
 
 cprofile_perfomance = {

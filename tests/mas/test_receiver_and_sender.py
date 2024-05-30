@@ -1,11 +1,11 @@
 from masr.models import interface
-import uuid
+
 
 from tests.test_base import source_code, gml, task_desc
 from masr.models.task import TaskHistory
 from tests.test_base import task_id, report, source_code
 
-mock_task_id = uuid.uuid4()
+mock_task_id = task_id
 mock_code = source_code
 mock_graph = gml
 mock_history = TaskHistory(history=[task_desc])
