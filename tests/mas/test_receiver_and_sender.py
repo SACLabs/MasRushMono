@@ -17,7 +17,7 @@ def mock_sender(x):
     return x
 
 
-def test_sender_data_format():
+def test_mas_sender_format():
     sender_data = interface.pack_mas_to_env_msg(
         task_id=mock_task_id,
         result=mock_code,
@@ -37,7 +37,7 @@ def test_sender_data_format():
     assert sender_data["content"]["graph"] == mock_graph
 
 
-def test_reciever_data_format():
+def test_mas_reciever_format():
     sender_data = interface.pack_env_to_mas_msg(
         task_id, demand, report, mock_code
     )
