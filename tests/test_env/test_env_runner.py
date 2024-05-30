@@ -26,7 +26,7 @@ pipeline_input = {
 
 runner_output = report
 
-
+# TODO 实现pipeline循环
 def test_pipeline():
     pipeline = mock.Mock()
     pipeline.return_value = report
