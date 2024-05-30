@@ -1,5 +1,5 @@
 import asyncio
-from tests.test_base import report
+# from tests.test_base import report
 
 
 async def send(url):
@@ -7,6 +7,7 @@ async def send(url):
     return "SUCCESS"
 
 
+# TODO: 实现env功能
 class Env:
     def __init__(self):
         self.url = "http://mas.url"
@@ -30,6 +31,7 @@ class Env:
         self._success = True
 
 
+# TODO: 实现mas功能
 class Mas:
     def __init__(self):
         self.url = "http://env.url"
