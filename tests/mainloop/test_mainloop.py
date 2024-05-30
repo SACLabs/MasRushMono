@@ -1,6 +1,5 @@
 import pytest
-import asyncio
-from tests.mainloop import Mas, Env, Report, mainloop
+from masr.mainloop import Mas, Env, Report, mainloop
 import uuid
 
 
