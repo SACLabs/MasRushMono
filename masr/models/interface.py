@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from masr.models.graph import GML
 from masr.models.task import TaskHistory
 
+import uuid
+
 
 class Demand(BaseModel):
     content: str
@@ -29,6 +31,6 @@ def pack_env_to_mas_msg(
 
 
 def pack_mas_to_env_msg(
-    task_id, result: SourceCode, history: TaskHistory, graph: GML
+    task_id: uuid, result: SourceCode, history: TaskHistory, graph: GML
 ) -> Dict:
     return {task_id: {"result": result, "history": history, "graph": graph}}
