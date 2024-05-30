@@ -1,5 +1,5 @@
 # Actor
-# This class is used for 
+# This class is used for
 # 1. message send
 # ```mermaid
 # xxxx
@@ -11,7 +11,8 @@ from typing import Set, Union, List
 from archive.typing.message import Message
 from .address import MultiAddr
 
-class AbstractActor():
+
+class AbstractActor:
     def __init__(self):
         super().__init__()
         self.address_book: Set[str] = set()  # name -> addr

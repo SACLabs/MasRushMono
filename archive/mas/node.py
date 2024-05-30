@@ -17,8 +17,10 @@ class Node(AbstractActor):
     message_handlers: Dict[str, List[Callable[..., Any]]] = (
         {}
     )  # ["DE:QA": [handler_generate_test], "PM:QA": [handler_generate_test, handler_generate_doc]]
-    message_types: List[List[str]] = []     # [["DE:QA", "PM:QA"], ["PM:QA"]]
-    handler_call_by_message_types: Dict[Callable, List[str]] = {}   # {"handler_generate_test": ["DE:QA", "PM:QA"], "handler_generate_doc": ["PM:QA"]}
+    message_types: List[List[str]] = []  # [["DE:QA", "PM:QA"], ["PM:QA"]]
+    handler_call_by_message_types: Dict[Callable, List[str]] = (
+        {}
+    )  # {"handler_generate_test": ["DE:QA", "PM:QA"], "handler_generate_doc": ["PM:QA"]}
 
     def __init__(self, node_name: str = "", address: str = ""):
         super().__init__()
@@ -38,12 +40,10 @@ class Node(AbstractActor):
         self.message_map[message.message_name].append(message)
         # 处理当前消息
         target_messages = self.handle_message(message)
-        
+
         [self._send(message, self.gate._node_addr) for message in target_messages]
 
-    def handle_message(
-        self, message: Message, *args: Any, **kwargs: Any
-    ) -> Any:
+    def handle_message(self, message: Message, *args: Any, **kwargs: Any) -> Any:
         result = []
         # 一个消息可触发多个处理函数
         handlers = self.message_handlers[message.message_name]
@@ -51,11 +51,16 @@ class Node(AbstractActor):
         for handler in handlers:
             # 根据 message 和 handler 寻找历史消息
             # 并打包消息给handler进行处理
-            handled_messages = [handler(messages) for messages in self.check_prefix(message, handler) if len(messages) is not 0]
+            handled_messages = [
+                handler(messages)
+                for messages in self.check_prefix(message, handler)
+                if len(messages) is not 0
+            ]
             result.append(handled_messages)
         return result
-    
-    def check_prefix(self, message: Message, handler: Callable
+
+    def check_prefix(
+        self, message: Message, handler: Callable
     ) -> Tuple[bool, List[Message]]:
         # 找到 触发 handler 所需的所有消息
         type_list = Node.handler_call_by_message_types[handler]
@@ -65,7 +70,7 @@ class Node(AbstractActor):
                 # 遍历消息列表
                 ...
         return [...]
-        
+
     @classmethod
     def process(cls, message_type_list: List[str]) -> Callable:
         def decorator(func: Callable):

@@ -1,6 +1,7 @@
 import unittest
 from snake import move, go_up, go_down, go_left, go_right
 
+
 class TestSnakeGame(unittest.TestCase):
     def test_move_up(self):
         head_starting_position = (0, 0)
@@ -25,10 +26,11 @@ class TestSnakeGame(unittest.TestCase):
         go_right()
         move()
         self.assertEqual(head_starting_position[0] + 20, head.xcor())
-        
+
     def test_exit_on_failed(self):
         # TODO: @yaoshengyue
         pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

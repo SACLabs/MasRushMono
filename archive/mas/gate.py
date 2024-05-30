@@ -31,15 +31,14 @@ class NodeGate(AbstractActor):
             self._node_count = 0
             self._node_id_instance = {}
 
-    def set_router_addr(self, node_gate_link_type, router_addr, router_instance):
-        ...
+    def set_router_addr(self, node_gate_link_type, router_addr, router_instance): ...
 
     def on_receive(self, message: Message):
         # 新消息添加至邮箱
         self._message_box.append(message)
         # 处理消息
         self.handle_message(message)
-    
+
     def handle_message(self, message: Message):
         # 根据消息来源的agent类型进行不同处理
         if message.from_agent_type == "Router":
@@ -48,7 +47,7 @@ class NodeGate(AbstractActor):
             self.send_message_to_router(message)
         else:
             raise NotImplementedError
-    
+
     def send_message_to_node(self, message):
         # gate -> node 分三种消息类型
         # 1. 点对点; 2. 广播; 3. 随机分配
@@ -75,7 +74,7 @@ class NodeGate(AbstractActor):
         # 根据 message name 传递消息给指定的router
         self._send(message, self._router_addr_dict[message.message_name])
         ...
-    
+
     def spawn_new_actor(self, cls, args):
         # 根据提供的类和参数动态创建同类型 node 的实例，并在 对应类型的 gate 中对它们进行管理。
         ...

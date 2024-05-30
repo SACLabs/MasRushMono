@@ -1,63 +1,31 @@
 from masr.models import interface
+from tests.test_base import task_id, report, source_code
+
+demand = interface.Demand(content="mock demand")
 
 
-mock_task_id = "mock_task_id"
-mock_demand = interface.Demand(content="mock demand")
-mock_report = interface.Report(
-    pytest_result={"pytest_key": "pytest_value"},
-    cprofile_perfomance={"cprofile_key": "cprofile_value"},
-)
-mock_code = interface.SourceCode(
-    tree="procoder                \
-            ├── functional.py       \
-            ├── __init__.py         \
-            ├── prompt              \
-            │   ├── base.py         \
-            │   ├── __init__.py     \
-            │   ├── modules.py      \
-            │   ├── proxy.py        \
-            │   ├── sequential.py   \
-            │   └── utils.py        \
-            └── utils               \
-                ├── __init__.py     \
-                └── my_typing.py",
-    content={
-        "procoder/functional.py": "mock_functional_code",
-        "procoder/__init__.py": "mock_init_code",
-        "procoder/prompt/base.py": "mock base code",
-        "procoder/prompt/__init__.py": "mock init code",
-        "procoder/prompt/modules.py": "mock modules code",
-        "procoder/prompt/proxy.py": "mock proxy code",
-        "procoder/prompt/sequential.py": "mock sequential code",
-        "procoder/prompt/utils.py": "mock utils code",
-        "procoder/utils/__init__.py": "mock utils init code",
-        "procoder/utils/my_typing.py": "mock my typing code",
-    },
-)
-
+# TODO, 之后需要改成真正的发送
 mock_sender = lambda x: x
 
 
 def test_sender_data_format():
-    sender_data = interface.pack_env_to_mas_msg(
-        mock_task_id, mock_demand, mock_report, mock_code
-    )
+    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
     assert "task_id" in sender_data
-    assert sender_data["task_id"] == mock_task_id
+    assert sender_data["task_id"] == task_id
 
-    assert "demand" in sender_data
-    assert sender_data["demand"] == mock_demand
+    sender_content = sender_data["content"]
 
-    assert "report" in sender_data
-    assert sender_data["report"] == mock_report
+    assert "demand" in sender_content
+    assert sender_content["demand"] == demand
 
-    assert "src" in sender_data
-    assert sender_data["src"] == mock_code
+    assert "report" in sender_content
+    assert sender_content["report"] == report
+
+    assert "src" in sender_content
+    assert sender_content["src"] == source_code
 
 
 def test_reciever_data_format():
-    sender_data = interface.pack_env_to_mas_msg(
-        mock_task_id, mock_demand, mock_report, mock_code
-    )
+    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data

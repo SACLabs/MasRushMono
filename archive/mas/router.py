@@ -25,9 +25,7 @@ class Router(AbstractActor):
             )
 
         elif message.from_node_type_name == self._node_gate_right:
-            self._send(
-                message, self._node_gate_type_address_dict[self._node_gate_left]
-            )
+            self._send(message, self._node_gate_type_address_dict[self._node_gate_left])
 
     def spawn_new_actor(self, cls, node_gate_link_type):
         # 生成 node_gate
