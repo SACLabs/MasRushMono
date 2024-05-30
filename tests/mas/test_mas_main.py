@@ -14,3 +14,32 @@
   - e. the changelog of task list
   - f. the graph of state transition
 """
+
+from masr.mas.main import pipeline
+from masr.models.interface import Demand
+from masr.models.task import TaskHistory
+from tests.test_base import task_id, source_code, task_desc, gml, report
+
+from unittest import mock
+
+
+demand = Demand(content="mock demand")
+mock_history = TaskHistory(history=[task_desc])
+
+pipeline_input = {
+    "task_id": task_id,
+    "content": {"demand": demand, "report": report, "src": source_code},
+}
+
+pipeline_output = {
+    "task_id": task_id,
+    "content": {"result": source_code, "history": mock_history, "graph": gml},
+}
+
+
+# TODO 实现pipeline循环
+def test_pipeline():
+    mock_pipeline = mock.Mock()
+    mock_pipeline.return_value = pipeline_output
+    output = mock_pipeline(pipeline_input)
+    assert pipeline_output == output

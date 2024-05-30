@@ -1,4 +1,4 @@
-def pipeline():
+def pipeline(input):
     pass
 
 
