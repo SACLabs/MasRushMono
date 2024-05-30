@@ -1,8 +1,9 @@
 from masr.models import interface
 from masr.models.graph import GML
 from masr.models.task import TaskStatus, TaskItem, TaskHistory
+import uuid
 
-mock_task_id = "mock_task_id"
+mock_task_id = uuid.uuid4()
 
 mock_code = interface.SourceCode(
     tree="procoder                \
@@ -164,7 +165,8 @@ mock_graph = GML(
 )
 
 
-mock_sender = lambda x: x
+def mock_sender(x):
+    return x
 
 
 def test_sender_data_format():
@@ -177,14 +179,14 @@ def test_sender_data_format():
     assert "task_id" in sender_data
     assert sender_data["task_id"] == mock_task_id
 
-    assert "result" in sender_data
-    assert sender_data["result"] == mock_code
+    assert "result" in sender_data["content"]
+    assert sender_data["content"]["result"] == mock_code
 
-    assert "history" in sender_data
-    assert sender_data["history"] == mock_history
+    assert "history" in sender_data["content"]
+    assert sender_data["content"]["history"] == mock_history
 
-    assert "graph" in sender_data
-    assert sender_data["graph"] == mock_graph
+    assert "graph" in sender_data["content"]
+    assert sender_data["content"]["graph"] == mock_graph
 
 
 def test_reciever_data_format():
