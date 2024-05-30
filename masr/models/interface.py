@@ -1,4 +1,6 @@
+# import uuid
 from typing import Dict
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -32,7 +34,7 @@ def pack_env_to_mas_msg(
 
 
 def pack_mas_to_env_msg(
-    task_id, result: SourceCode, history: TaskHistory, graph: GML
+    task_id: UUID, result: SourceCode, history: TaskHistory, graph: GML
 ) -> Dict:
     return {
         "task_id": task_id,
