@@ -25,10 +25,10 @@ class SourceCode(BaseModel):
 def pack_env_to_mas_msg(
     task_id, demand: Demand, report: Report, src: SourceCode
 ) -> Dict:
-    return {task_id: {"demand": demand, "report": report, "src": src}}
+    return {"task_id": task_id, "demand": demand, "report": report, "src": src}
 
 
 def pack_mas_to_env_msg(
     task_id, result: SourceCode, history: TaskHistory, graph: GML
 ) -> Dict:
-    return {task_id: {"result": result, "history": history, "graph": graph}}
+    return {"task_id": task_id, "result": result, "history": history, "graph": graph}
