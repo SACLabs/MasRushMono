@@ -15,7 +15,6 @@
   - f. the graph of state transition
 """
 
-from masr.mas.main import pipeline
 from masr.models.interface import Demand
 from masr.models.task import TaskHistory
 from tests.test_base import task_id, source_code, task_desc, gml, report
@@ -41,5 +40,6 @@ pipeline_output = {
 def test_pipeline():
     mock_pipeline = mock.Mock()
     mock_pipeline.return_value = pipeline_output
-    output = mock_pipeline(pipeline_input)
-    assert pipeline_output == output
+    with mock.patch("masr.mas.main.pipeline", mock_pipeline):
+        output = mock_pipeline(pipeline_input)
+        assert pipeline_output == output
