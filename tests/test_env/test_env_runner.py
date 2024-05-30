@@ -1,4 +1,4 @@
-from masr.env.runner import pipeline
+from masr.env_server.runner import pipeline
 from masr.models.interface import pack_mas_to_env_msg, Report
 from masr.models.task import TaskHistory, TaskItem, TaskStatus
 from masr.models.graph import GML
