@@ -1,4 +1,5 @@
 import asyncio
+
 # from typing import Dict
 import uuid
 
@@ -67,7 +68,7 @@ class Mas:
         return "SUCCESS"
 
     async def handel_failure(self, report):  # start again if fail
-        print('Handeling failure', report)
+        print("Handeling failure", report)
 
 
 class Report:

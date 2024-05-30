@@ -52,5 +52,6 @@ async def test_mainloop_failure(mock_task_config, mock_env, mock_mas):
     await mainloop(mock_task_config, mock_env, mock_mas)
     assert mock_env._success is False
 
+
 if __name__ == "__main__":
     pytest.main()
