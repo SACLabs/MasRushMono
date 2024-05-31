@@ -37,7 +37,7 @@ async def mainloop(task_config, env, mas):
         e_promise = await e_promise
         assert e_promise == "SUCCESS"
 
-        # Assert the MASOutput successfully run
+        # Assert the mas2env successfully run
         m_promise = await m_promise
         report = await env.check(m_promise)
 
