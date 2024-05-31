@@ -10,7 +10,7 @@ from masr.models.task import TaskHistory
 
 class Demand(BaseModel):
     content: str
-    test_file: Dict
+    test_file: Dict[str, str]
 
 
 class Report(BaseModel):
