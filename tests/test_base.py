@@ -1,4 +1,5 @@
 import os
+
 import sys
 from pathlib import Path
 from datetime import datetime
@@ -11,7 +12,7 @@ from masr.models.graph import GML, from_GML
 # 在代码中使用日志
 
 # 添加上级目录到模块搜索路径
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(str(Path(__file__).resolve().parent))
 
 # read demand
 # content
