@@ -3,7 +3,21 @@ from pathlib import Path
 import uuid
 from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
+import os
 
+# read demand
+# content
+with open("demand/readme.md", "r", encoding="utf-8") as f:
+    contents = f.read()
+# test file
+test_file = {}
+for filename in os.listdir("demand/tests"):
+    with open(
+        os.path.join("demand/tests", filename), "r", encoding="utf-8"
+    ) as f:
+        test_file[filename] = f.read()
+# mock demand data
+demand = interface.Demand(content=contents, test_file=test_file)
 
 gml = Path("tests/test.gml").read_text()
 
