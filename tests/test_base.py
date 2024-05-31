@@ -7,6 +7,25 @@ from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
 from masr.models.graph import GML, from_GML
 
+import logging
+
+# 设置日志配置
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+# 打印当前目录的文件和文件夹
+current_path = Path(".")
+logger.info("当前目录的内容:")
+for entry in current_path.iterdir():
+    logger.info(entry.name)
+
+# 打印上一级目录的文件和文件夹
+parent_path = Path("..")
+logger.info("\n上一级目录的内容:")
+for entry in parent_path.iterdir():
+    logger.info(entry.name)
+
 
 # read demand
 # content
