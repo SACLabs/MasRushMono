@@ -24,6 +24,20 @@ class SourceCode(BaseModel):
     content: Dict[str, str]
 
 
+class EnvOutput(BaseModel):
+    task_id: UUID
+    demand: Demand
+    report: Report
+    src: TaskHistory
+
+
+class MASOutput(BaseModel):
+    task_id: UUID
+    result: SourceCode
+    graph: GML
+    history: TaskHistory
+
+
 def pack_env_to_mas_msg(
     task_id, demand: Demand, report: Report, src: SourceCode
 ) -> Dict:

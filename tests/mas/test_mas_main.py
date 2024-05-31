@@ -15,7 +15,7 @@
   - f. the graph of state transition
 """
 
-from masr.models.interface import Demand
+from masr.models.interface import Demand, EnvOutput, MASOutput
 from masr.models.task import TaskHistory
 from tests.test_base import (
     task_id,
@@ -25,7 +25,6 @@ from tests.test_base import (
     report,
     nxgraph,
 )
-from masr.mas.main import Env2MAS, MAS2Env
 from unittest import mock
 
 mock_task_id = task_id
@@ -92,7 +91,7 @@ def test_optimize_graph():
 
 def test_run_graph():
     # Simulate running the optimized graph and collecting results
-    expected_result = MAS2Env(
+    expected_result = MASOutput(
         task_id=mock_task_id,
         result=mock_src,
         graph=mock_gml,

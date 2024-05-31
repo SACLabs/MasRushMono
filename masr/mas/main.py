@@ -23,28 +23,11 @@
 """
 
 from typing import Dict
-from uuid import UUID
 
 from networkx import MultiDiGraph
-from pydantic import BaseModel
 
-from masr.models.graph import GML
-from masr.models.interface import Demand, Report, SourceCode
+from masr.models.interface import Demand, EnvOutput, MASOutput
 from masr.models.task import TaskHistory
-
-
-class Env2MAS(BaseModel):
-    task_id: UUID
-    demand: Demand
-    report: Report
-    src: TaskHistory
-
-
-class MAS2Env(BaseModel):
-    task_id: UUID
-    result: SourceCode
-    graph: GML
-    history: TaskHistory
 
 
 def interpret_demand(demand: Demand) -> TaskHistory:
@@ -62,12 +45,12 @@ def optimize_graph(graph: MultiDiGraph) -> MultiDiGraph:
     raise NotImplementedError("This function is not yet implemented.")
 
 
-def run_graph(graph: MultiDiGraph) -> MAS2Env:
+def run_graph(graph: MultiDiGraph) -> MASOutput:
     # Simulate running the optimized graph and collecting results
     raise NotImplementedError("This function is not yet implemented.")
 
 
-def mas_run(inp: MAS2Env) -> Env2MAS:
+def mas_run(inp: MASOutput) -> EnvOutput:
     raise NotImplementedError("This function is not yet implemented.")
 
 
