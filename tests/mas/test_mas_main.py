@@ -15,24 +15,39 @@
   - f. the graph of state transition
 """
 
-from masr.models.interface import Demand
+from masr.models.interface import Demand, EnvOutput, MASOutput
 from masr.models.task import TaskHistory
-from tests.test_base import task_id, source_code, task_desc, gml, report
-
+from tests.test_base import (
+    task_id,
+    source_code,
+    task_desc,
+    gml,
+    report,
+    nxgraph,
+    demand,
+)
 from unittest import mock
 
-
-demand = Demand(content="mock demand")
+mock_task_id = task_id
+mock_demand = demand
 mock_history = TaskHistory(history=[task_desc])
+mock_report = report
+mock_src = source_code
+mock_graph = nxgraph
+mock_gml = gml
 
 mas_input = {
     "task_id": task_id,
-    "content": {"demand": demand, "report": report, "src": source_code},
+    "content": {"demand": mock_demand, "report": mock_report, "src": mock_src},
 }
 
 mas_output = {
     "task_id": task_id,
-    "content": {"result": source_code, "history": mock_history, "graph": gml},
+    "content": {
+        "result": mock_src,
+        "history": mock_history,
+        "graph": mock_gml,
+    },
 }
 
 
@@ -43,3 +58,52 @@ def test_mas_pipeline():
     with mock.patch("masr.mas.main.pipeline", mock_pipeline):
         output = mock_pipeline(mas_input)
         assert mas_output == output
+
+
+def test_interpret_demand():
+    # interpret_readme 函数,读取demand，应返回TaskHistory对象
+    expected_result = mock_history
+    with mock.patch(
+        "masr.mas.main.interpret_demand", return_value=expected_result
+    ) as mock_run:
+        output_result = mock_run(mock_demand)
+        assert expected_result == output_result
+
+
+def test_create_graph():
+    # creating a graph state from the task list
+    expected_result = mock_graph
+    with mock.patch(
+        "masr.mas.main.create_graph", return_value=expected_result
+    ) as mock_run:
+        output_result = mock_run(mock_history)
+        assert expected_result == output_result
+
+
+def test_optimize_graph():
+    # graph optimization
+    expected_result = mock_graph
+    with mock.patch(
+        "masr.mas.main.optimize_graph", return_value=expected_result
+    ) as mock_run:
+        output_result = mock_run(mock_graph)
+        assert expected_result == output_result
+
+
+def test_run_graph():
+    # Simulate running the optimized graph and collecting results
+    expected_result = MASOutput(
+        task_id=mock_task_id,
+        result=mock_src,
+        graph=mock_gml,
+        history=mock_history,
+    )
+    with mock.patch(
+        "masr.mas.main.run_graph", return_value=expected_result
+    ) as mock_run:
+        output_result = mock_run(mock_graph)
+        assert expected_result == output_result
+
+
+def test_mas_run():
+    pass
