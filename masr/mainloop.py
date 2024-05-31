@@ -1,5 +1,6 @@
 import asyncio
 
+
 class Promise:
     def __init__(self, coro):
         self._coro = coro
@@ -46,7 +47,7 @@ async def mainloop(task_config, env, mas):
 
         # step 5 judge if the task is success or not
         if env._success:
-            mas.set_success_flag(task_config['content']['demand']['demand_id'])
+            mas.set_success_flag(task_config["content"]["demand"]["demand_id"])
             break
         else:
             await mas.handel_failure()

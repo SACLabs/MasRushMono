@@ -28,12 +28,12 @@ class Env:
     # perform pytest and cprofile test
     async def perform_test(self):
         await asyncio.sleep(1)
-        test_results = 'SUCCESS'
-        self._success = (test_results == 'SUCCESS')
+        test_results = "SUCCESS"
+        self._success = test_results == "SUCCESS"
         print(f"env performed test, success")
 
     def set_success_flag(self, demand_id: UUID):
-    # present to user the task is complete
+        # present to user the task is complete
         print(f"demand {demand_id} is success")
 
 
@@ -51,10 +51,9 @@ class Mas:
         await asyncio.sleep(1)
         print(f"env received data from {url}")
 
-
     async def handel_failure(self, report):  # start again if fail
         # implement to logi of handelling failure
         print("Handeling failure", report)
 
-    def set_success_flag(self, demand_id:UUID):
+    def set_success_flag(self, demand_id: UUID):
         print(f"task {demand_id} is marked as success")

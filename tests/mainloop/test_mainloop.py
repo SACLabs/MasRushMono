@@ -11,13 +11,16 @@ demand = Demand(content="mock demand")
 def mock_task_config():
     return pack_env_to_mas_msg(task_id, demand, report, source_code)
 
+
 @pytest.fixture()
 def env():
     return Env("http://env.url")
 
+
 @pytest.fixture()
 def mas():
     return Mas("http://mas.url")
+
 
 @pytest.mark.asyncio
 async def test_mainloop_success(mock_task_config, env, mas):
