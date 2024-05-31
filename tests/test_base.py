@@ -29,13 +29,13 @@ for entry in parent_path.iterdir():
 
 # read demand
 # content
-with open("tests/demand/readme.md", "r", encoding="utf-8") as f:
+with open("demand/Readme.md", "r", encoding="utf-8") as f:
     contents = f.read()
 # test file
 test_file = {}
-for filename in os.listdir("tests/demand/tests"):
+for filename in os.listdir("demand/tests"):
     with open(
-        os.path.join("tests/demand/tests", filename), "r", encoding="utf-8"
+        os.path.join("demand/tests", filename), "r", encoding="utf-8"
     ) as f:
         test_file[filename] = f.read()
 # mock demand data
