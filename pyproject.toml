@@ -14,7 +14,7 @@ redis = "^5.0.4"
 dill = "^0.3.8"
 pytest = "^8.2.1"
 tk = "^0.1.0"
-zstd = "^1.5.5.1"
+zstandard = "^0.22.0"
 
 
 [tool.poetry.group.dev.dependencies]
