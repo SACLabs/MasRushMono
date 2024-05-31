@@ -9,7 +9,7 @@ def gen_sender(dtypes, target):
         encoding = "utf-8"
     )
     
-    def sender(data):
+    def sender():
         while True:
             # 根据 dtypes 从对应队列获取消息
             message = redis_client.brpop(f"{dtypes}_send_queue", 0)
@@ -20,3 +20,12 @@ def gen_sender(dtypes, target):
                     print(f"{dtypes}, {target}, sender error: {str(e)}")
             time.sleep(1)
     return sender
+
+
+'''
+sender = gen_sender(dtypes='MAS', target="http://example.com:8080")
+import threading
+
+sender_thread = threading.Thread(target=sender)
+sender_thread.start()
+'''
