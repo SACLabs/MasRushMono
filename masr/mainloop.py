@@ -1,6 +1,5 @@
 import asyncio
 
-
 class Promise:
     def __init__(self, coro):
         self._coro = coro
@@ -26,24 +25,29 @@ class TaskPromise:
 
 
 async def mainloop(task_config, env, mas):
-    env.init(task_config)
-    mas.init(task_config)
 
     while await env.run():
-        e_promise = env.send(mas.url)
-        m_promise = mas.send(env.url)
+        # step 1 env send packed data (task_config) to mas
+        e_promise = Promise(env.send(mas.url, task_config))
+        env_promise = TaskPromise(lambda p: print(f"env sent data: {p}"))
+        env_promise.promise = e_promise
 
-        # Assert the env2mas successfully run
-        e_promise = await e_promise
-        assert e_promise == "SUCCESS"
+        # step 2 mas received and process data
+        m_promise = Promise(mas.receive(env.url))
+        mas_promise = TaskPromise(lambda p: print(f"mas received data: {p}"))
+        mas_promise.promise = m_promise
 
-        # Assert the mas2env successfully run
-        m_promise = await m_promise
-        report = await env.check(m_promise)
+        # step 3 mas sends data back to env
+        mas_results = await mas_promise.promise
+        await env.receive(mas_results)
 
-        if report.status == "SUCCESS":
-            mas.set_success_flag(task_config["task_id"])
+        # step 4 env performs test
+        await env.perform_test()
+
+        # step 5 judge if the task is success or not
+        if env._success:
+            mas.set_success_flag(task_config['content']['demand']['demand_id'])
             break
         else:
-            await mas.handel_failure(report)
+            await mas.handel_failure()
             await asyncio.sleep(1)

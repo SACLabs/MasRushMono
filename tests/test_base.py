@@ -17,7 +17,7 @@ for filename in os.listdir("demand/tests"):
     ) as f:
         test_file[filename] = f.read()
 # mock demand data
-demand = interface.Demand(content=contents, test_file=test_file)
+demand = interface.Demand(demand_id = uuid.uuid4(), content=contents, test_file=test_file)
 
 gml = Path("tests/test.gml").read_text()
 
