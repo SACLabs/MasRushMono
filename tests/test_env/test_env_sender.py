@@ -9,7 +9,9 @@ mock_sender = lambda x: x
 
 
 def test_sender_data_format():
-    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
+    sender_data = interface.pack_env_to_mas_msg(
+        task_id, demand, report, source_code
+    )
     assert "task_id" in sender_data
     assert sender_data["task_id"] == task_id
 
@@ -26,6 +28,8 @@ def test_sender_data_format():
 
 
 def test_reciever_data_format():
-    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
+    sender_data = interface.pack_env_to_mas_msg(
+        task_id, demand, report, source_code
+    )
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data

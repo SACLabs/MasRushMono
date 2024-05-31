@@ -3,9 +3,13 @@ from pathlib import Path
 import uuid
 from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
+from masr.models.graph import GML, from_GML
 
 
-gml = Path("tests/test.gml").read_text()
+gml_str = Path("tests/test.gml").read_text()
+gml = GML(content=gml_str)
+
+nxgraph = from_GML(gml)
 
 task_id = uuid.uuid4()
 
