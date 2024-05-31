@@ -24,11 +24,12 @@ from tests.test_base import (
     gml,
     report,
     nxgraph,
+    demand,
 )
 from unittest import mock
 
 mock_task_id = task_id
-mock_demand = Demand(content="mock demand")
+mock_demand = demand
 mock_history = TaskHistory(history=[task_desc])
 mock_report = report
 mock_src = source_code

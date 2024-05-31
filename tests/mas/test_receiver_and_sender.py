@@ -1,7 +1,7 @@
 from masr.models import interface
 
 
-from tests.test_base import source_code, gml, task_desc
+from tests.test_base import source_code, gml, task_desc, demand
 from masr.models.task import TaskHistory
 from tests.test_base import task_id, report, source_code
 
@@ -10,7 +10,7 @@ mock_code = source_code
 mock_graph = gml
 mock_history = TaskHistory(history=[task_desc])
 
-demand = interface.Demand(content="mock demand")
+mock_demand = demand
 
 
 def mock_sender(x):
@@ -39,7 +39,7 @@ def test_mas_sended_format():
 
 def test_mas_recieved_format():
     sender_data = interface.pack_env_to_mas_msg(
-        task_id, demand, report, mock_code
+        task_id, mock_demand, report, mock_code
     )
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data

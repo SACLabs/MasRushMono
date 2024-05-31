@@ -9,7 +9,9 @@ from masr.models.task import TaskHistory
 
 
 class Demand(BaseModel):
+    demand_id: UUID
     content: str
+    test_file: Dict[str, str]
 
 
 class Report(BaseModel):

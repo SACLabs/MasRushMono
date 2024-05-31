@@ -1,9 +1,33 @@
-from datetime import datetime
+import os
+import sys
 from pathlib import Path
+from datetime import datetime
 import uuid
 from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
 from masr.models.graph import GML, from_GML
+
+
+# 在代码中使用日志
+
+# 添加上级目录到模块搜索路径
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+# read demand
+# content
+with open("demand/readme.md", "r", encoding="utf-8") as f:
+    contents = f.read()
+# test file
+test_file = {}
+for filename in os.listdir("demand/tests"):
+    with open(
+        os.path.join("demand/tests", filename), "r", encoding="utf-8"
+    ) as f:
+        test_file[filename] = f.read()
+# mock demand data
+demand = interface.Demand(
+    demand_id=uuid.uuid4(), content=contents, test_file=test_file
+)
 
 
 gml_str = Path("tests/test.gml").read_text()
