@@ -1,13 +1,35 @@
-from datetime import datetime
+import os
+
 from pathlib import Path
+from datetime import datetime
 import uuid
 from masr.models import interface
 from masr.models.task import TaskStatus, TaskItem
-import os
+from masr.models.graph import GML, from_GML
+
+import logging
+
+# 设置日志配置
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+# 打印当前目录的文件和文件夹
+current_path = Path(".")
+logger.info("当前目录的内容:")
+for entry in current_path.iterdir():
+    logger.info(entry.name)
+
+# 打印上一级目录的文件和文件夹
+parent_path = Path("..")
+logger.info("\n上一级目录的内容:")
+for entry in parent_path.iterdir():
+    logger.info(entry.name)
+
 
 # read demand
 # content
-with open("demand/readme.md", "r", encoding="utf-8") as f:
+with open("demand/Readme.md", "r", encoding="utf-8") as f:
     contents = f.read()
 # test file
 test_file = {}
@@ -21,7 +43,11 @@ demand = interface.Demand(
     demand_id=uuid.uuid4(), content=contents, test_file=test_file
 )
 
-gml = Path("tests/test.gml").read_text()
+
+gml_str = Path("tests/test.gml").read_text()
+gml = GML(content=gml_str)
+
+nxgraph = from_GML(gml)
 
 task_id = uuid.uuid4()
 
