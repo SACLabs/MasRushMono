@@ -6,10 +6,8 @@ pytestmark = pytest.mark.skip(
 
 from masr.mainloop import mainloop
 from tests.mainloop.test_base import Env, Mas
-from tests.test_base import task_id, report, source_code
-from masr.models.interface import pack_env_to_mas_msg, Demand
-
-demand = Demand(content="mock demand")
+from tests.test_base import task_id, report, source_code, demand
+from masr.models.interface import pack_env_to_mas_msg
 
 
 @pytest.fixture
