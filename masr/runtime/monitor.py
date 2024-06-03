@@ -1,4 +1,4 @@
-from masr.env_server.runner import pipeline
+from masr.runtime.runner import pipeline
 
 
 def kanban():

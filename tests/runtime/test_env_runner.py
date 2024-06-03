@@ -1,4 +1,4 @@
-from masr.env_server.runner import pipeline, generate_code_project
+from masr.runtime.runner import pipeline, generate_code_project, run_pytest, run_cprofile
 from masr.models.interface import pack_mas_to_env_msg, Report
 from masr.models.task import TaskHistory, TaskItem, TaskStatus
 from tests.test_base import task_id, report, source_code, gml, task_desc
@@ -45,6 +45,10 @@ def test_generate_source_code_project():
     for file_path in file_paths:
         file_test = Path(file_path).read_text()
         assert file_test == source_code.content[file_path.split('/tmp/')[1]]
+
+def test_pytest():
+    # pytest_result =
+    pass
 
 
 # TODO

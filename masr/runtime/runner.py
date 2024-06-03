@@ -7,24 +7,32 @@ import shutil
 
 from masr.models.interface import SourceCode
 
-venv_path = "/example_env_path"
+venv_path = "/home/PJLAB/chenliang/anaconda3/envs/fairs"
 
 
 def run_pytest(source_code_path):
     # 载入预先创建好的虚拟环境
-    json_report_path = os.path.join(source_code_path, "report.json")
+    pytest_report_path = os.path.join(source_code_path, "pytest_report.json")
+    coverage_report_path = os.path.join(source_code_path, "coverage_report.json")
     pytest_command = [
         os.path.join(venv_path, "bin", "pytest"),
+        "--cov",
+        f"--cov-report=json:{coverage_report_path}",
         "--json-report",
-        f"--json-report-file={json_report_path}",
+        f"--json-report-file={pytest_report_path}",
         source_code_path,
     ]
     subprocess.run(pytest_command)
+    report = {}
     # 读取json报告
-    with open(json_report_path, "r") as file:
+    with open(pytest_report_path, "r") as file:
         report_data = json.load(file)
+        report["pytest_report"] = report_data["summary"]
+    with open(coverage_report_path, "r") as file:
+        report_data = json.load(file)
+        report["coverage_report"] = report_data["files"]
     # {'passed': 3, 'total': 3, 'collected': 3}
-    return report_data["summary"]
+    return report
 
 
 def run_cprofile(source_code_path):
