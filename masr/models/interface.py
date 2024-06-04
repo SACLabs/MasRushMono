@@ -9,7 +9,9 @@ from masr.models.task import TaskHistory
 
 
 class Demand(BaseModel):
+    demand_id: UUID
     content: str
+    test_file: Dict[str, str]
 
 
 class Report(BaseModel):
@@ -22,6 +24,20 @@ class SourceCode(BaseModel):
     tree: str
     # {file_name: src_str}
     content: Dict[str, str]
+
+
+class EnvOutput(BaseModel):
+    task_id: UUID
+    demand: Demand
+    report: Report
+    src: SourceCode
+
+
+class MASOutput(BaseModel):
+    task_id: UUID
+    result: SourceCode
+    graph: GML
+    history: TaskHistory
 
 
 def pack_env_to_mas_msg(
