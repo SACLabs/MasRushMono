@@ -30,7 +30,7 @@ class EnvOutput(BaseModel):
     task_id: UUID
     demand: Demand
     report: Report
-    src: TaskHistory
+    src: SourceCode
 
 
 class MASOutput(BaseModel):

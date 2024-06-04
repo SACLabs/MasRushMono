@@ -50,7 +50,7 @@ def run_graph(graph: MultiDiGraph) -> MASOutput:
     raise NotImplementedError("This function is not yet implemented.")
 
 
-def mas_run(inp: MASOutput) -> EnvOutput:
+def mas_run(inp: EnvOutput) -> MASOutput:
     raise NotImplementedError("This function is not yet implemented.")
 
 
