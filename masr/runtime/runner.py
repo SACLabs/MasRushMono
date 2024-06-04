@@ -1,5 +1,6 @@
 from typing import Dict
 import os
+import sys
 import subprocess
 import json
 import pstats
@@ -7,8 +8,7 @@ import shutil
 
 from masr.models.interface import SourceCode
 
-venv_path = "/home/PJLAB/chenliang/anaconda3/envs/fairs"
-
+venv_path = os.path.dirname(os.path.dirname(sys.executable))
 
 def run_pytest(source_code_path):
     # 载入预先创建好的虚拟环境
@@ -38,12 +38,13 @@ def run_pytest(source_code_path):
 def run_cprofile(source_code_path):
     # 编辑run.sh文件，追加虚拟环境进去
     run_script_path = os.path.join(source_code_path, "run.sh")
-    activate_command = f". {venv_path}/bin/activate\n"
+    activate_command = f"source activate {venv_path}\n"
+    change_folder_command = f"cd {source_code_path} \n"
     # 读取脚本的原始内容
     with open(run_script_path, "r") as file:
         original_content = file.readlines()
     # 插入激活命令
-    new_content = [activate_command] + original_content
+    new_content = [activate_command] + [change_folder_command] + original_content
     # 重新写回文件
     with open(run_script_path, "w") as file:
         file.writelines(new_content)

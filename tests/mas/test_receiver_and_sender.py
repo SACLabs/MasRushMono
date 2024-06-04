@@ -38,8 +38,6 @@ def test_mas_sended_format():
 
 
 def test_mas_recieved_format():
-    sender_data = interface.pack_env_to_mas_msg(
-        task_id, demand, report, mock_code
-    )
+    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, mock_code)
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data
