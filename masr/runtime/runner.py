@@ -10,6 +10,7 @@ from masr.models.interface import SourceCode
 
 venv_path = os.path.dirname(os.path.dirname(sys.executable))
 
+
 def run_pytest(source_code_path):
     # 载入预先创建好的虚拟环境
     pytest_report_path = os.path.join(source_code_path, "pytest_report.json")
@@ -91,7 +92,7 @@ def generate_code_project(source_code: SourceCode):
     return project_path
 
 
-def pipeline(source_code: SourceCode):
+def run_ci(source_code: SourceCode):
     source_code_path = generate_code_project(source_code)
     pytest_result = run_pytest(source_code_path)
     performance_result = run_cprofile(source_code_path)

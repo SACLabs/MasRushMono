@@ -1,9 +1,11 @@
 from masr.runtime.runner import (
-    pipeline,
     generate_code_project,
     run_pytest,
     run_cprofile,
 )
+
+from masr.runtime.monitor import pipeline
+
 from masr.models.interface import pack_mas_to_env_msg, Report
 from masr.models.task import TaskHistory, TaskItem, TaskStatus
 from tests.test_base import task_id, report, source_code, gml, task_desc

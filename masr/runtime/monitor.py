@@ -1,4 +1,4 @@
-from masr.runtime.runner import pipeline
+from masr.runtime.runner import run_ci
 
 
 def kanban():
@@ -9,6 +9,10 @@ def start_reciever_server():
     pass
 
 
+def pipeline(pipeline_input):
+    pytest_result, performance_result = run_ci(pipeline_input["content"]["result"])
+
+
 def run():
     while True:
-        pipeline()
+        pass
