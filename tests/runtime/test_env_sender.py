@@ -1,7 +1,13 @@
 from masr.models import interface
 from tests.test_base import task_id, report, source_code
 
-demand = interface.Demand(content="mock demand")
+import uuid
+
+demand = interface.Demand(
+        demand_id = uuid.uuid4(),
+        content="mock demand",
+        test_file = {"mock_file": "mock_file_content"}
+    )
 
 
 # TODO, 之后需要改成真正的发送
