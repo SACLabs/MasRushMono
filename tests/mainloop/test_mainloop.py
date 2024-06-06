@@ -1,69 +1,127 @@
-import pytest
+import asyncio
+import unittest
+import uuid
+from unittest.mock import AsyncMock, patch, MagicMock
 
-pytestmark = pytest.mark.skip(
-    reason="Skipping all tests in this file temporarily."
+from masr.mainloop.mainloop import env_loop, mas_loop, main_loop
+from masr.models.interface import EnvOutput, MASOutput
+from tests.test_base import (
+    task_id,
+    demand,
+    report,
+    source_code,
+    task_desc,
+    gml,
 )
-
-from masr.mainloop import mainloop
-from tests.mainloop.test_base import Env, Mas
-from tests.test_base import task_id, report, source_code, demand
-from masr.models.interface import pack_env_to_mas_msg
+from masr.models.task import TaskHistory
 
 
-@pytest.fixture
-def mock_task_config():
-    return pack_env_to_mas_msg(task_id, demand, report, source_code)
+class TestEnvMAS(unittest.IsolatedAsyncioTestCase):
 
+    def setUp(self):
+        self.redis_mock = MagicMock()
 
-@pytest.fixture()
-def env():
-    return Env("http://env.url")
+        mock_history = TaskHistory(history=[task_desc])
+        # Mock EnvOutput and MASOutput
+        self.env_output = EnvOutput(
+            task_id=task_id, demand=demand, report=report, src=source_code
+        )
+        self.mas_output = MASOutput(
+            task_id=task_id,
+            result=source_code,
+            graph=gml,
+            history=mock_history,
+        )
 
+    @patch(
+        "masr.mainloop.wrapper.EnvWrapper.perform_pipeline",
+        new_callable=AsyncMock,
+    )
+    @patch("masr.mainloop.wrapper.EnvWrapper.send", new_callable=AsyncMock)
+    @patch("masr.mainloop.wrapper.EnvWrapper.receive", new_callable=AsyncMock)
+    async def test_env_loop(
+        self, mock_receive, mock_send, mock_perform_pipeline
+    ):
+        # Set up mocks
+        mock_receive.return_value = self.mas_output
+        mock_perform_pipeline.return_value = True
 
-@pytest.fixture()
-def mas():
-    return Mas("http://mas.url")
+        task_config = self.env_output
+        await env_loop(self.redis_mock, task_config)
 
+        # Verify the mocks were called as expected
+        mock_send.assert_called_once()
+        mock_receive.assert_called_once()
+        mock_perform_pipeline.assert_called_once()
 
-@pytest.mark.asyncio
-async def test_mainloop_success(mock_task_config, env, mas):
-    # Mock methods to always return success
-    async def mock_send_success(url, task_config):
-        return "SUCCESS"
+    @patch("masr.mainloop.wrapper.MasWrapper.receive", new_callable=AsyncMock)
+    @patch("masr.mainloop.wrapper.EnvWrapper.send", new_callable=AsyncMock)
+    @patch(
+        "masr.mainloop.wrapper.MasWrapper.perform_pipeline",
+        new_callable=AsyncMock,
+    )
+    async def test_mas_loop(
+        self, mock_receive, mock_send, mock_perform_pipeline
+    ):
+        # Set up mocks
+        mock_receive.return_value = self.env_output
+        mock_perform_pipeline.return_value = True
 
-    async def mock_receive_success(url):
-        return mock_task_config
+        stop_event = asyncio.Event()
+        mas_task = asyncio.create_task(mas_loop(self.redis_mock, stop_event))
 
-    async def mock_perform_test_success():
-        env._success = True
+        await asyncio.sleep(0.1)  # Allow loop to process
 
-    env.send = mock_send_success
-    mas.receive = mock_receive_success
-    env.perform_test = mock_perform_test_success
+        # Simulate stopping the loop
+        stop_event.set()
+        await mas_task
 
-    await mainloop(mock_task_config, env, mas)
-    assert env._success is True
+        # Verify the mocks were called as expected
+        mock_receive.assert_called()
+        mock_send.assert_called()
+        mock_perform_pipeline.assert_called()
 
+    @patch(
+        "masr.mainloop.wrapper.EnvWrapper.perform_pipeline",
+        new_callable=AsyncMock,
+    )
+    @patch("masr.mainloop.wrapper.EnvWrapper.send", new_callable=AsyncMock)
+    @patch("masr.mainloop.wrapper.EnvWrapper.receive", new_callable=AsyncMock)
+    @patch("masr.mainloop.wrapper.MasWrapper.receive", new_callable=AsyncMock)
+    @patch("masr.mainloop.wrapper.EnvWrapper.send", new_callable=AsyncMock)
+    @patch(
+        "masr.mainloop.wrapper.MasWrapper.perform_pipeline",
+        new_callable=AsyncMock,
+    )
+    async def test_main_loop(
+        self,
+        mock_mas_receive,
+        mock_mas_send,
+        mock_mas_perform_pipeline,
+        mock_env_receive,
+        mock_env_send,
+        mock_env_perform_pipeline,
+    ):
+        mock_mas_receive.return_value = self.env_output
+        mock_mas_perform_pipeline.return_value = self.mas_output
+        mock_env_receive.return_value = self.mas_output
+        mock_env_perform_pipeline.return_value = self.env_output
 
-@pytest.mark.asyncio
-async def test_mainloop_failure(mock_task_config, env, mas):
-    # Mock methods to alternate success and failure
-    async def mock_send_success(url):
-        return "SUCCESS"
+        task_config1 = self.env_output
+        task_config2 = self.env_output
+        task_config2.task_id = uuid.uuid4()
+        task_config2.demand.demand_id = uuid.uuid4()
 
-    async def mock_receive_success(url):
-        return mock_task_config
+        await main_loop([task_config1, task_config2], self.redis_mock)
 
-    async def mock_perform_test_failure(promise):
-        env._success = False
-
-    env.send = mock_send_success
-    mas.receive = mock_receive_success
-    env.perform_test = mock_perform_test_failure
-
-    await mainloop(mock_task_config, env, mas)
-    assert env._success is False
+        # Verify the mocks were called as expected
+        self.assertEqual(mock_env_send.call_count, 2)
+        self.assertEqual(mock_env_receive.call_count, 2)
+        self.assertEqual(mock_env_perform_pipeline.call_count, 2)
+        self.assertEqual(mock_mas_send.call_count, 2)
+        self.assertEqual(mock_mas_receive.call_count, 2)
+        self.assertEqual(mock_mas_perform_pipeline.call_count, 2)
 
 
 if __name__ == "__main__":
-    pytest.main()
+    unittest.main()

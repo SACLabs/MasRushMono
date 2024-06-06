@@ -73,10 +73,14 @@ def test_add():
     pytest_result = run_pytest(demand_dir)
     assert "coverage_report" in pytest_result
     assert "pytest_report" in pytest_result
-    assert pytest_result["pytest_report"] == {"collected": 1, "passed": 1, "total": 1}
-    assert pytest_result["coverage_report"][f"{demand_dir}/tests/test_main.py"][
-        "summary"
-    ] == {
+    assert pytest_result["pytest_report"] == {
+        "collected": 1,
+        "passed": 1,
+        "total": 1,
+    }
+    assert pytest_result["coverage_report"][
+        f"{demand_dir}/tests/test_main.py"
+    ]["summary"] == {
         "covered_lines": 2,
         "num_statements": 2,
         "percent_covered": 100.0,

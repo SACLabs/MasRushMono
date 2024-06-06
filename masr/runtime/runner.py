@@ -1,10 +1,9 @@
-from typing import Dict
-import os
-import sys
-import subprocess
 import json
+import os
 import pstats
 import shutil
+import subprocess
+import sys
 
 from masr.models.interface import SourceCode
 
@@ -14,7 +13,9 @@ venv_path = os.path.dirname(os.path.dirname(sys.executable))
 def run_pytest(source_code_path):
     # 载入预先创建好的虚拟环境
     pytest_report_path = os.path.join(source_code_path, "pytest_report.json")
-    coverage_report_path = os.path.join(source_code_path, "coverage_report.json")
+    coverage_report_path = os.path.join(
+        source_code_path, "coverage_report.json"
+    )
     pytest_command = [
         os.path.join(venv_path, "bin", "pytest"),
         "--cov",
@@ -45,7 +46,9 @@ def run_cprofile(source_code_path):
     with open(run_script_path, "r") as file:
         original_content = file.readlines()
     # 插入激活命令
-    new_content = [activate_command] + [change_folder_command] + original_content
+    new_content = (
+        [activate_command] + [change_folder_command] + original_content
+    )
     # 重新写回文件
     with open(run_script_path, "w") as file:
         file.writelines(new_content)
@@ -68,7 +71,9 @@ def run_cprofile(source_code_path):
             "cumtime": stats[3],  # 累积时间（包括子调用）
             # 可以根据需要添加更多字段，例如 'filename', 'lineno' 等
         }
-        profile_data[f"{func_name[0]}:{func_name[1]}:({func_name[2]})"] = func_stats
+        profile_data[f"{func_name[0]}:{func_name[1]}:({func_name[2]})"] = (
+            func_stats
+        )
     return profile_data
 
 

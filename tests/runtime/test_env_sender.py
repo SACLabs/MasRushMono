@@ -4,10 +4,10 @@ from tests.test_base import task_id, report, source_code
 import uuid
 
 demand = interface.Demand(
-        demand_id = uuid.uuid4(),
-        content="mock demand",
-        test_file = {"mock_file": "mock_file_content"}
-    )
+    demand_id=uuid.uuid4(),
+    content="mock demand",
+    test_file={"mock_file": "mock_file_content"},
+)
 
 
 # TODO, 之后需要改成真正的发送
@@ -15,7 +15,9 @@ mock_sender = lambda x: x
 
 
 def test_sender_data_format():
-    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
+    sender_data = interface.pack_env_to_mas_msg(
+        task_id, demand, report, source_code
+    )
     assert "task_id" in sender_data
     assert sender_data["task_id"] == task_id
 
@@ -32,6 +34,8 @@ def test_sender_data_format():
 
 
 def test_reciever_data_format():
-    sender_data = interface.pack_env_to_mas_msg(task_id, demand, report, source_code)
+    sender_data = interface.pack_env_to_mas_msg(
+        task_id, demand, report, source_code
+    )
     reciever_data = mock_sender(sender_data)
     assert sender_data == reciever_data

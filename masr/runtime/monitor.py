@@ -10,7 +10,9 @@ def start_reciever_server():
 
 
 def pipeline(pipeline_input):
-    pytest_result, performance_result = run_ci(pipeline_input["content"]["result"])
+    pytest_result, performance_result = run_ci(
+        pipeline_input["content"]["result"]
+    )
 
 
 def run():
