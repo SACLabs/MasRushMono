@@ -6,7 +6,8 @@ import requests
 
 def gen_sender(dtypes, target):
     redis_client = redis.from_url(
-        # TODO:REDIS_URL,
+        # REDIS_URL
+        "redis://localhost:6379",
         decode_responses=True,
         encoding="utf-8",
     )

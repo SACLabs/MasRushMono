@@ -1,11 +1,12 @@
-import redis
 from fastapi import FastAPI, HTTPException
+import redis
 
 
 def gen_receiver(dtypes):
     app = FastAPI()
     redis_client = redis.from_url(
-        # REDIS_URL,
+        # REDIS_URL
+        "redis://localhost:6379",
         decode_responses=True,
         encoding="utf-8",
     )
@@ -17,6 +18,7 @@ def gen_receiver(dtypes):
             return {"message": "Data received and added to Redis"}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+    return app
 
 
 """
