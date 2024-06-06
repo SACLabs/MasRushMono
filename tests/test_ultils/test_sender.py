@@ -20,7 +20,7 @@ def test_gen_sender(mocker):
 
     sender = gen_sender(dtypes="MAS", target="http://example.com:8080")
 
-    # Run sender in a limited loop for testing
+    # sender 运行到 sleep 时触发 StopIteration 方便跳出循环
     mocker.patch("masr.ultils.sender.time.sleep", side_effect=StopIteration)
 
     try:
