@@ -1,5 +1,5 @@
-from fastapi import FastAPI, HTTPException
 import redis
+from fastapi import FastAPI, HTTPException
 
 
 def gen_receiver(dtypes):
@@ -18,6 +18,7 @@ def gen_receiver(dtypes):
             return {"message": "Data received and added to Redis"}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+
     return app
 
 
