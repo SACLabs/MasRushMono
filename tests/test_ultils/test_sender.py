@@ -33,7 +33,3 @@ def test_gen_sender(mocker):
     mock_post.assert_called_once_with(
         "http://example.com:8080", json=mock_message
     )
-
-
-if __name__ == "__main__":
-    pytest.main()
