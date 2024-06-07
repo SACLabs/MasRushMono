@@ -20,7 +20,9 @@ class TaskItem(BaseModel):
     # optional
     tags: List[str] = Field(default_factory=list)
     subtasks: List["TaskItem"] = Field(default_factory=list)
-    owner: List = Field(default_factory=list)  # 确保owner的类型明确，如List[str]
+    owner: List = Field(
+        default_factory=list
+    )  # 确保owner的类型明确，如List[str]
     priority: Optional[int] = 0
     due_date: Optional[datetime] = None
     created_time: Optional[datetime] = Field(default_factory=datetime.now)
